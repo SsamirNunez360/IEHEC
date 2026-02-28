@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="description" content="Programación de Servicios - Iglesia Evangélica Hermanos en Cristo">
+<link rel="manifest" href="manifest.json">
+<title>IEHC · Programación de Servicios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --gold-pale: #f5e6c0;
+    --dark: #0d0d1a;
+    --dark2: #141428;
+    --dark3: #1e1e38;
+    --dark4: #252540;
+    --white: #f8f4ee;
+    --cream: #ede8de;
+    --text-muted: #8888aa;
+    --red: #e05555;
+    --green: #4caf79;
+    --blue: #5580e0;
+    --border: rgba(201,168,76,0.2);
+    --shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'Crimson Pro', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 20% 20%, rgba(201,168,76,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 80% 80%, rgba(85,128,224,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 2.5rem 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 100%);
+  }
+
+  .cross-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--gold);
+    display: block;
+    letter-spacing: 0.1em;
+  }
+
+  header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  header p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    font-style: italic;
+  }
+
+  /* ===== NAVIGATION TABS ===== */
+  nav {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .tab:hover { color: var(--gold); border-color: var(--gold); }
+  .tab.active {
+    background: var(--gold);
+    color: var(--dark);
+    border-color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  main {
+    position: relative;
+    z-index: 5;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s;
+  }
+
+  .card:hover { border-color: rgba(201,168,76,0.4); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
+  }
+
+  .badge {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 2rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.06em;
+  }
+
+  .badge-gold { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .badge-blue { background: rgba(85,128,224,0.15); color: #88aaff; border: 1px solid rgba(85,128,224,0.3); }
+  .badge-green { background: rgba(76,175,121,0.15); color: #7fd9a4; border: 1px solid rgba(76,175,121,0.3); }
+
+  /* ===== SCHEDULE TABLE ===== */
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .schedule-table th {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    padding: 0.7rem 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .schedule-table td {
+    padding: 0.8rem 0.8rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+    color: var(--cream);
+  }
+
+  .schedule-table tr:last-child td { border-bottom: none; }
+
+  .schedule-table tr:hover td {
+    background: rgba(201,168,76,0.04);
+  }
+
+  .today-row td {
+    background: rgba(201,168,76,0.08) !important;
+    border-left: 3px solid var(--gold);
+  }
+
+  .date-cell {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    color: var(--gold-light);
+    white-space: nowrap;
+  }
+
+  .service-chip {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: 1rem;
+    background: rgba(85,128,224,0.12);
+    color: #99bbff;
+    border: 1px solid rgba(85,128,224,0.2);
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.04em;
+  }
+
+  /* ===== SERVIDOR CARDS ===== */
+  .servidor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .servidor-card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .servidor-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+
+  .servidor-card.selected {
+    border-color: var(--gold);
+    background: var(--dark3);
+  }
+
+  .servidor-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    color: var(--gold-light);
+    margin-bottom: 0.4rem;
+  }
+
+  .servidor-count {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .notification-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 2rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: 'Crimson Pro', serif;
+    transition: all 0.3s;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .notification-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .notification-btn.active {
+    background: rgba(76,175,121,0.1);
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  /* ===== DETAIL PANEL ===== */
+  #servidor-detail {
+    display: none;
+    margin-top: 1.5rem;
+  }
+
+  #servidor-detail.visible { display: block; }
+
+  .detail-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--dark4));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--dark);
+    border: 2px solid var(--gold);
+    flex-shrink: 0;
+  }
+
+  .service-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+    margin-bottom: 0.5rem;
+    background: var(--dark3);
+  }
+
+  .service-item .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .service-item .date { font-size: 0.78rem; color: var(--gold-light); font-family: 'Cinzel', serif; min-width: 90px; }
+  .service-item .role { font-size: 0.85rem; color: var(--cream); }
+  .service-item .day-type { font-size: 0.72rem; color: var(--text-muted); font-style: italic; }
+
+  /* ===== ADMIN PANEL ===== */
+  .admin-gate {
+    max-width: 360px;
+    margin: 3rem auto;
+    text-align: center;
+  }
+
+  .admin-gate h2 {
+    font-family: 'Cinzel', serif;
+    color: var(--gold-light);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+  }
+
+  .input-group {
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+
+  .input-group label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+  }
+
+  input, select {
+    width: 100%;
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'Crimson Pro', serif;
+    transition: border-color 0.3s;
+    outline: none;
+  }
+
+  input:focus, select:focus { border-color: var(--gold); }
+  select option { background: var(--dark2); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    transition: all 0.3s;
+  }
+
+  .btn-primary { background: var(--gold); color: var(--dark); }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-danger { background: rgba(224,85,85,0.15); color: var(--red); border: 1px solid rgba(224,85,85,0.3); }
+  .btn-danger:hover { background: rgba(224,85,85,0.25); }
+  .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--border); }
+  .btn-outline:hover { border-color: var(--gold); }
+
+  .admin-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    gap: 0.5rem;
+    align-items: end;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 700px) {
+    .admin-row { grid-template-columns: 1fr 1fr; }
+    .schedule-table { font-size: 0.78rem; }
+    .schedule-table th, .schedule-table td { padding: 0.6rem 0.4rem; }
+  }
+
+  /* ===== NOTIFICATIONS TOAST ===== */
+  #toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--dark3);
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    padding: 0.8rem 1.5rem;
+    border-radius: 2rem;
+    font-size: 0.88rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.06em;
+    transition: transform 0.4s cubic-bezier(.2,.8,.4,1);
+    z-index: 1000;
+    white-space: nowrap;
+    box-shadow: var(--shadow);
+  }
+
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ===== SECTION TITLES ===== */
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 1.5rem 0 0.8rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .month-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .month-selector select {
+    width: auto;
+    background: var(--dark2);
+    padding: 0.5rem 1rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    color: var(--gold-light);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+  }
+
+  /* animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .view.active > * {
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .view.active > *:nth-child(2) { animation-delay: 0.06s; }
+  .view.active > *:nth-child(3) { animation-delay: 0.12s; }
+  .view.active > *:nth-child(4) { animation-delay: 0.18s; }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+
+  #admin-panel { display: none; }
+  #admin-panel.visible { display: block; }
+
+  .help-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    font-style: italic;
+  }
+
+  /* Next service highlight */
+
+
+  #pwa-install-btn {
+    display: none;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="cross-icon">✦</span>
+  <h1>Iglesia Evangélica<br>Hermanos en Cristo</h1>
+  <p>Las Lomitas · Orocuina · Choluteca</p>
+</header>
+
+<nav>
+  <button class="tab active" onclick="showView('calendario')">📅 Calendario</button>
+  <button class="tab" onclick="showView('servidores')">🙏 Servidores</button>
+  <button class="tab" onclick="showView('admin'); initAdminView()">⚙️ Admin</button>
+</nav>
+
+<main>
+  <!-- ============ CALENDARIO VIEW ============ -->
+  <div id="view-calendario" class="view active">
+    <div class="month-selector">
+      <select id="cal-month" onchange="renderCalendar()"></select>
+      <span id="cal-total" class="badge badge-gold"></span>
+    </div>
+
+<div class="card" style="padding:0; overflow:hidden;">
+      <div style="overflow-x:auto;">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Tipo</th>
+              <th>Dirección</th>
+              <th>Lectura</th>
+              <th>Ofrenda</th>
+              <th>Predicación</th>
+            </tr>
+          </thead>
+          <tbody id="calendar-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SERVIDORES VIEW ============ -->
+  <div id="view-servidores" class="view">
+    <p class="section-title">Selecciona un servidor para ver su horario</p>
+    <div class="servidor-grid" id="servidor-grid"></div>
+    <div id="servidor-detail"></div>
+  </div>
+
+  <!-- ============ ADMIN VIEW ============ -->
+  <div id="view-admin" class="view">
+    <div id="admin-gate-container">
+      <div class="admin-gate">
+        <h2>🔐 Acceso Administrativo</h2>
+        <div class="input-group">
+          <label>Contraseña</label>
+          <input type="password" id="admin-pass" placeholder="Ingresa la contraseña" onkeydown="if(event.key==='Enter')adminLogin()">
+        </div>
+        <button class="btn btn-primary" onclick="adminLogin()" style="width:100%">Ingresar</button>
+        <p class="help-text" style="margin-top:0.8rem; text-align:center">Contraseña inicial: <strong style="color:var(--gold)">iehc2026</strong></p>
+      </div>
+    </div>
+
+    <div id="admin-panel">
+      <div class="stats-grid" id="admin-stats"></div>
+
+      <p class="section-title">Agregar Servicio</p>
+      <div class="card">
+        <div class="admin-row" id="add-row">
+          <div class="input-group" style="margin:0">
+            <label>Fecha</label>
+            <input type="date" id="new-fecha">
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Tipo</label>
+            <select id="new-tipo">
+              <option>Domingo</option>
+              <option>Martes</option>
+              <option>Jueves</option>
+              <option>Especial</option>
+            </select>
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Dirección</label>
+            <input type="text" id="new-direccion" placeholder="Nombre" list="servidores-list">
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Lectura Bíblica</label>
+            <input type="text" id="new-lectura" placeholder="Nombre" list="servidores-list">
+          </div>
+          <div></div>
+        </div>
+        <div class="admin-row">
+          <div class="input-group" style="margin:0">
+            <label>Ofrenda</label>
+            <input type="text" id="new-ofrenda" placeholder="Nombre" list="servidores-list">
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Predicación</label>
+            <input type="text" id="new-predicacion" placeholder="Nombre o vacío" list="servidores-list">
+          </div>
+          <div></div>
+          <div></div>
+          <button class="btn btn-primary" onclick="addService()" style="height:fit-content; align-self:end">+ Agregar</button>
+        </div>
+        <datalist id="servidores-list"></datalist>
+      </div>
+
+      <p class="section-title">Importar Programación (CSV)</p>
+      <div class="card">
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.8rem;">Puedes subir un archivo CSV con columnas: fecha, tipo, direccion, lectura, ofrenda, predicacion</p>
+        <input type="file" id="csv-upload" accept=".csv" style="margin-bottom:0.8rem;">
+        <button class="btn btn-outline" onclick="importCSV()">📂 Importar CSV</button>
+      </div>
+
+      <p class="section-title">Notificar Servidores</p>
+      <div class="card">
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Enviar recordatorio a todos los servidores con notificaciones activas</p>
+        <button class="btn btn-primary" onclick="sendBroadcast()">📣 Enviar Recordatorio General</button>
+      </div>
+
+      <p class="section-title">Servicios Programados</p>
+      <div id="admin-services-list"></div>
+
+      <div class="divider"></div>
+      <button class="btn btn-danger" onclick="adminLogout()">🚪 Cerrar Sesión Admin</button>
+    </div>
+  </div>
+</main>
+
+<div id="toast"></div>
+<button id="pwa-install-btn" class="btn btn-outline">📲 Instalar App</button>
+
+<script>
+// ============================================================
+// DATA STORE
+// ============================================================
+const PASS = 'iehc2026';
+
+const DATA_VERSION = '2026-v8';
+const storedVersion = localStorage.getItem('iehc_data_version');
+if (storedVersion !== DATA_VERSION) {
+  localStorage.removeItem('iehc_services');
+  localStorage.setItem('iehc_data_version', DATA_VERSION);
+}
+
+let services = JSON.parse(localStorage.getItem('iehc_services') || 'null');
+if (!services) {
+  // Default Feb 2026 data from the image
+  services = [
+    { id:1, fecha:'2026-02-01', tipo:'Domingo',  direccion:'Cinthia Rivera',    lectura:'Yanely Nuñez',      ofrenda:'Yeicob Viera',       predicacion:'Elmer Montoya' },
+    { id:2, fecha:'2026-02-03', tipo:'Martes',   direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',      ofrenda:'Naomy Maldonado',    predicacion:'' },
+    { id:3, fecha:'2026-02-05', tipo:'Jueves',   direccion:'Yanely Nuñez',      lectura:'Sandy Gomez',       ofrenda:'Ana Gonzalez',       predicacion:'Marta Gonzales' },
+    { id:4, fecha:'2026-02-08', tipo:'Domingo',  direccion:'Marta Gonzales',    lectura:'Stephanie Nuñez',   ofrenda:'Marcela Gonzalez',   predicacion:'Edwin Gomez' },
+    { id:5, fecha:'2026-02-10', tipo:'Martes',   direccion:'Yanely Nuñez',      lectura:'Yeicob Viera',      ofrenda:'Sandy Gomez',        predicacion:'' },
+    { id:6, fecha:'2026-02-12', tipo:'Jueves',   direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',      ofrenda:'Stephanie Nuñez',    predicacion:'Cinthia Rivera' },
+    { id:7, fecha:'2026-02-15', tipo:'Domingo',  direccion:'Sindy Gonzalez',    lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',       predicacion:'Ssamir Nuñez' },
+    { id:8, fecha:'2026-02-17', tipo:'Martes',   direccion:'Sandy Gomez',       lectura:'Ana Gonzalez',      ofrenda:'Sandy Gomez',        predicacion:'' },
+    { id:9, fecha:'2026-02-19', tipo:'Jueves',   direccion:'Cinthia Rivera',    lectura:'Stephanie Nuñez',   ofrenda:'Yeicob Viera',       predicacion:'Sindy Gonzalez' },
+    { id:10,fecha:'2026-02-22', tipo:'Domingo',  direccion:'Ssamir Nuñez',      lectura:'Ssamir Nuñez',      ofrenda:'Stephanie Nuñez',    predicacion:'Victorino Ordoñez' },
+    { id:11,fecha:'2026-02-24', tipo:'Martes',   direccion:'Yanely Nuñez',      lectura:'Naomy Maldonado',   ofrenda:'Marcela Gonzalez',   predicacion:'' },
+    { id:12,fecha:'2026-02-26', tipo:'Jueves',   direccion:'Sindy Gonzalez',    lectura:'Yeicob Viera',      ofrenda:'Naomy Maldonado',    predicacion:'Elmer Montoya' },
+    // Marzo 2026
+    { id:13,fecha:'2026-03-01', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:14,fecha:'2026-03-03', tipo:'Martes',   direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:15,fecha:'2026-03-05', tipo:'Jueves',   direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:16,fecha:'2026-03-08', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:17,fecha:'2026-03-10', tipo:'Martes',   direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:18,fecha:'2026-03-12', tipo:'Jueves',   direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:19,fecha:'2026-03-15', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:20,fecha:'2026-03-17', tipo:'Martes',   direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:21,fecha:'2026-03-19', tipo:'Jueves',   direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:22,fecha:'2026-03-22', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:23,fecha:'2026-03-24', tipo:'Martes',   direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:24,fecha:'2026-03-26', tipo:'Jueves',   direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:25,fecha:'2026-03-29', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:26,fecha:'2026-03-31', tipo:'Martes',   direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    // Abril 2026
+    { id:27,fecha:'2026-04-02', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:28,fecha:'2026-04-05', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:29,fecha:'2026-04-07', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:30,fecha:'2026-04-09', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:31,fecha:'2026-04-12', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:32,fecha:'2026-04-14', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:33,fecha:'2026-04-16', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:34,fecha:'2026-04-19', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:35,fecha:'2026-04-21', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:36,fecha:'2026-04-23', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:37,fecha:'2026-04-26', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:38,fecha:'2026-04-28', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:39,fecha:'2026-04-30', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    // Mayo 2026
+    { id:40,fecha:'2026-05-03', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:41,fecha:'2026-05-05', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:42,fecha:'2026-05-07', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:43,fecha:'2026-05-10', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:44,fecha:'2026-05-12', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:45,fecha:'2026-05-14', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:46,fecha:'2026-05-17', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:47,fecha:'2026-05-19', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:48,fecha:'2026-05-21', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:49,fecha:'2026-05-24', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:50,fecha:'2026-05-26', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:51,fecha:'2026-05-28', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:52,fecha:'2026-05-31', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    // Junio 2026
+    { id:53,fecha:'2026-06-02', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:54,fecha:'2026-06-04', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:55,fecha:'2026-06-07', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:56,fecha:'2026-06-09', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:57,fecha:'2026-06-11', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:58,fecha:'2026-06-14', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:59,fecha:'2026-06-16', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:60,fecha:'2026-06-18', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:61,fecha:'2026-06-21', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:62,fecha:'2026-06-23', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:63,fecha:'2026-06-25', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:64,fecha:'2026-06-28', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:65,fecha:'2026-06-30', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    // Julio 2026
+    { id:66,fecha:'2026-07-02', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:67,fecha:'2026-07-05', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:68,fecha:'2026-07-07', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:69,fecha:'2026-07-09', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:70,fecha:'2026-07-12', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:71,fecha:'2026-07-14', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:72,fecha:'2026-07-16', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:73,fecha:'2026-07-19', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:74,fecha:'2026-07-21', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:75,fecha:'2026-07-23', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:76,fecha:'2026-07-26', tipo:'Domingo',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:77,fecha:'2026-07-28', tipo:'Martes',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    { id:78,fecha:'2026-07-30', tipo:'Jueves',  direccion:'',  lectura:'',  ofrenda:'',  predicacion:'' },
+    // Agosto 2026
+    { id:79,fecha:'2026-08-02', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
+    { id:80,fecha:'2026-08-04', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Naomy Maldonado',  predicacion:'' },
+    { id:81,fecha:'2026-08-06', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
+    { id:82,fecha:'2026-08-09', tipo:'Domingo',  direccion:'Marta Gonzales',  lectura:'Stephanie Nuñez',  ofrenda:'Marcela Gonzalez',  predicacion:'Edwin Gomez' },
+    { id:83,fecha:'2026-08-11', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Yeicob Viera',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:84,fecha:'2026-08-13', tipo:'Jueves',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Stephanie Nuñez',  predicacion:'Cinthia Rivera' },
+    { id:85,fecha:'2026-08-16', tipo:'Domingo',  direccion:'Cinthia Rivera',  lectura:'Yanely Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Elmer Montoya' },
+    { id:86,fecha:'2026-08-18', tipo:'Martes',  direccion:'Sandy Gomez',  lectura:'Ana Gonzalez',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:87,fecha:'2026-08-20', tipo:'Jueves',  direccion:'Cinthia Rivera',  lectura:'Stephanie Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Sindy Gonzalez' },
+    { id:88,fecha:'2026-08-23', tipo:'Domingo',  direccion:'Ssamir Nuñez',  lectura:'Ssamir Nuñez',  ofrenda:'Stephanie Nuñez',  predicacion:'Victorino Ordoñez' },
+    { id:89,fecha:'2026-08-25', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Naomy Maldonado',  ofrenda:'Marcela Gonzalez',  predicacion:'' },
+    { id:90,fecha:'2026-08-27', tipo:'Jueves',  direccion:'Sindy Gonzalez',  lectura:'Yeicob Viera',  ofrenda:'Naomy Maldonado',  predicacion:'Elmer Montoya' },
+    { id:91,fecha:'2026-08-30', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
+    // Septiembre 2026
+    { id:92,fecha:'2026-09-01', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Naomy Maldonado',  predicacion:'' },
+    { id:93,fecha:'2026-09-03', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
+    { id:94,fecha:'2026-09-06', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
+    { id:95,fecha:'2026-09-08', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Yeicob Viera',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:96,fecha:'2026-09-10', tipo:'Jueves',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Stephanie Nuñez',  predicacion:'Cinthia Rivera' },
+    { id:97,fecha:'2026-09-13', tipo:'Domingo',  direccion:'Marta Gonzales',  lectura:'Stephanie Nuñez',  ofrenda:'Marcela Gonzalez',  predicacion:'Edwin Gomez' },
+    { id:98,fecha:'2026-09-15', tipo:'Martes',  direccion:'Sandy Gomez',  lectura:'Ana Gonzalez',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:99,fecha:'2026-09-17', tipo:'Jueves',  direccion:'Cinthia Rivera',  lectura:'Stephanie Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Sindy Gonzalez' },
+    { id:100,fecha:'2026-09-20', tipo:'Domingo',  direccion:'Cinthia Rivera',  lectura:'Yanely Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Elmer Montoya' },
+    { id:101,fecha:'2026-09-22', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Naomy Maldonado',  ofrenda:'Marcela Gonzalez',  predicacion:'' },
+    { id:102,fecha:'2026-09-24', tipo:'Jueves',  direccion:'Sindy Gonzalez',  lectura:'Yeicob Viera',  ofrenda:'Naomy Maldonado',  predicacion:'Elmer Montoya' },
+    { id:103,fecha:'2026-09-27', tipo:'Domingo',  direccion:'Ssamir Nuñez',  lectura:'Ssamir Nuñez',  ofrenda:'Stephanie Nuñez',  predicacion:'Victorino Ordoñez' },
+    { id:104,fecha:'2026-09-29', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'' },
+    // Octubre 2026
+    { id:105,fecha:'2026-10-01', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
+    { id:106,fecha:'2026-10-04', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
+    { id:107,fecha:'2026-10-06', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Naomy Maldonado',  predicacion:'' },
+    { id:108,fecha:'2026-10-08', tipo:'Jueves',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Stephanie Nuñez',  predicacion:'Cinthia Rivera' },
+    { id:109,fecha:'2026-10-11', tipo:'Domingo',  direccion:'Marta Gonzales',  lectura:'Stephanie Nuñez',  ofrenda:'Marcela Gonzalez',  predicacion:'Edwin Gomez' },
+    { id:110,fecha:'2026-10-13', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Yeicob Viera',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:111,fecha:'2026-10-15', tipo:'Jueves',  direccion:'Cinthia Rivera',  lectura:'Stephanie Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Sindy Gonzalez' },
+    { id:112,fecha:'2026-10-18', tipo:'Domingo',  direccion:'Cinthia Rivera',  lectura:'Yanely Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Elmer Montoya' },
+    { id:113,fecha:'2026-10-20', tipo:'Martes',  direccion:'Sandy Gomez',  lectura:'Ana Gonzalez',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:114,fecha:'2026-10-22', tipo:'Jueves',  direccion:'Sindy Gonzalez',  lectura:'Yeicob Viera',  ofrenda:'Naomy Maldonado',  predicacion:'Elmer Montoya' },
+    { id:115,fecha:'2026-10-25', tipo:'Domingo',  direccion:'Ssamir Nuñez',  lectura:'Ssamir Nuñez',  ofrenda:'Stephanie Nuñez',  predicacion:'Victorino Ordoñez' },
+    { id:116,fecha:'2026-10-27', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Naomy Maldonado',  ofrenda:'Marcela Gonzalez',  predicacion:'' },
+    { id:117,fecha:'2026-10-29', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
+    // Noviembre 2026
+    { id:118,fecha:'2026-11-01', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
+    { id:119,fecha:'2026-11-03', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Naomy Maldonado',  predicacion:'' },
+    { id:120,fecha:'2026-11-05', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
+    { id:121,fecha:'2026-11-08', tipo:'Domingo',  direccion:'Marta Gonzales',  lectura:'Stephanie Nuñez',  ofrenda:'Marcela Gonzalez',  predicacion:'Edwin Gomez' },
+    { id:122,fecha:'2026-11-10', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Yeicob Viera',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:123,fecha:'2026-11-12', tipo:'Jueves',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Stephanie Nuñez',  predicacion:'Cinthia Rivera' },
+    { id:124,fecha:'2026-11-15', tipo:'Domingo',  direccion:'Cinthia Rivera',  lectura:'Yanely Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Elmer Montoya' },
+    { id:125,fecha:'2026-11-17', tipo:'Martes',  direccion:'Sandy Gomez',  lectura:'Ana Gonzalez',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:126,fecha:'2026-11-19', tipo:'Jueves',  direccion:'Cinthia Rivera',  lectura:'Stephanie Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Sindy Gonzalez' },
+    { id:127,fecha:'2026-11-22', tipo:'Domingo',  direccion:'Ssamir Nuñez',  lectura:'Ssamir Nuñez',  ofrenda:'Stephanie Nuñez',  predicacion:'Victorino Ordoñez' },
+    { id:128,fecha:'2026-11-24', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Naomy Maldonado',  ofrenda:'Marcela Gonzalez',  predicacion:'' },
+    { id:129,fecha:'2026-11-26', tipo:'Jueves',  direccion:'Sindy Gonzalez',  lectura:'Yeicob Viera',  ofrenda:'Naomy Maldonado',  predicacion:'Elmer Montoya' },
+    { id:130,fecha:'2026-11-29', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
+    // Diciembre 2026
+    { id:131,fecha:'2026-12-01', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Naomy Maldonado',  predicacion:'' },
+    { id:132,fecha:'2026-12-03', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
+    { id:133,fecha:'2026-12-06', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
+    { id:134,fecha:'2026-12-08', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Yeicob Viera',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:135,fecha:'2026-12-10', tipo:'Jueves',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Stephanie Nuñez',  predicacion:'Cinthia Rivera' },
+    { id:136,fecha:'2026-12-13', tipo:'Domingo',  direccion:'Marta Gonzales',  lectura:'Stephanie Nuñez',  ofrenda:'Marcela Gonzalez',  predicacion:'Edwin Gomez' },
+    { id:137,fecha:'2026-12-15', tipo:'Martes',  direccion:'Sandy Gomez',  lectura:'Ana Gonzalez',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:138,fecha:'2026-12-17', tipo:'Jueves',  direccion:'Cinthia Rivera',  lectura:'Stephanie Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Sindy Gonzalez' },
+    { id:139,fecha:'2026-12-20', tipo:'Domingo',  direccion:'Cinthia Rivera',  lectura:'Yanely Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Elmer Montoya' },
+    { id:140,fecha:'2026-12-22', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Naomy Maldonado',  ofrenda:'Marcela Gonzalez',  predicacion:'' },
+    { id:141,fecha:'2026-12-24', tipo:'Jueves',  direccion:'Sindy Gonzalez',  lectura:'Yeicob Viera',  ofrenda:'Naomy Maldonado',  predicacion:'Elmer Montoya' },
+    { id:142,fecha:'2026-12-27', tipo:'Domingo',  direccion:'Ssamir Nuñez',  lectura:'Ssamir Nuñez',  ofrenda:'Stephanie Nuñez',  predicacion:'Victorino Ordoñez' },
+    { id:143,fecha:'2026-12-29', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'' },
+    { id:144,fecha:'2026-12-31', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
+  ];
+  saveServices();
+}
+
+let notifSubscriptions = JSON.parse(localStorage.getItem('iehc_notifs') || '{}');
+// { 'Yanely Nuñez': true, ... }
+
+function saveServices() {
+  localStorage.setItem('iehc_services', JSON.stringify(services));
+}
+
+function saveNotifs() {
+  localStorage.setItem('iehc_notifs', JSON.stringify(notifSubscriptions));
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function formatDate(str) {
+  const [y,m,d] = str.split('-');
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+}
+
+function todayStr() {
+  return new Date().toISOString().slice(0,10);
+}
+
+function getMonths() {
+  const months = [...new Set(services.map(s => s.fecha.slice(0,7)))].sort();
+  return months;
+}
+
+function getServidores() {
+  const all = new Set();
+  services.forEach(s => {
+    [s.direccion, s.lectura, s.ofrenda, s.predicacion].forEach(n => { if(n) all.add(n.trim()); });
+  });
+  return [...all].sort();
+}
+
+function getServicesByServidor(name) {
+  const result = [];
+  services.forEach(s => {
+    const roles = [];
+    if (s.direccion === name) roles.push('Dirección');
+    if (s.lectura === name) roles.push('Lectura Bíblica');
+    if (s.ofrenda === name) roles.push('Ofrenda');
+    if (s.predicacion === name) roles.push('Predicación');
+    if (roles.length > 0) result.push({ ...s, roles });
+  });
+  return result.sort((a,b) => a.fecha.localeCompare(b.fecha));
+}
+
+function getNextService() {
+  const today = todayStr();
+  return services.filter(s => s.fecha >= today).sort((a,b) => a.fecha.localeCompare(b.fecha))[0] || null;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// VIEWS
+// ============================================================
+function showView(v) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  event.target.classList.add('active');
+
+  if (v === 'calendario') renderCalendar();
+  if (v === 'servidores') renderServidores();
+}
+
+// ============================================================
+// CALENDAR VIEW
+// ============================================================
+function renderCalendar() {
+  const sel = document.getElementById('cal-month');
+  const months = getMonths();
+  
+  if (!sel.options.length || sel.dataset.built !== '1') {
+    sel.innerHTML = '';
+    const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    months.forEach(m => {
+      const [y,mo] = m.split('-');
+      const opt = document.createElement('option');
+      opt.value = m;
+      opt.textContent = `${monthNames[parseInt(mo)-1]} ${y}`;
+      sel.appendChild(opt);
+    });
+    sel.dataset.built = '1';
+    // Default to current or closest month
+    const today = todayStr().slice(0,7);
+    if (months.includes(today)) sel.value = today;
+    else if (months.length) sel.value = months[months.length-1];
+  }
+
+  const month = sel.value;
+  const filtered = services.filter(s => s.fecha.startsWith(month)).sort((a,b) => a.fecha.localeCompare(b.fecha));
+  document.getElementById('cal-total').textContent = filtered.length + ' servicios';
+
+  const tbody = document.getElementById('calendar-tbody');
+  tbody.innerHTML = '';
+  const today = todayStr();
+
+  filtered.forEach(s => {
+    const tr = document.createElement('tr');
+    if (s.fecha === today) tr.classList.add('today-row');
+    tr.innerHTML = `
+      <td class="date-cell">${formatDate(s.fecha)}</td>
+      <td><span class="service-chip">${s.tipo}</span></td>
+      <td>${s.direccion}</td>
+      <td>${s.lectura}</td>
+      <td>${s.ofrenda}</td>
+      <td>${s.predicacion || '<span style="color:var(--text-muted)">—</span>'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem;font-style:italic;">No hay servicios programados para este mes</td></tr>';
+  }
+
+
+}
+
+// ============================================================
+// SERVIDORES VIEW
+// ============================================================
+function renderServidores() {
+  const grid = document.getElementById('servidor-grid');
+  const servidores = getServidores();
+  grid.innerHTML = '';
+
+  servidores.forEach(name => {
+    const svs = getServicesByServidor(name);
+    const notifOn = notifSubscriptions[name] || false;
+    const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+
+    const card = document.createElement('div');
+    card.className = 'servidor-card';
+    card.id = 'sc-' + name.replace(/\s/g,'_');
+    card.innerHTML = `
+      <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.3rem;">
+        <div class="avatar" style="width:36px;height:36px;font-size:0.8rem;">${initials}</div>
+        <div class="servidor-name">${name}</div>
+      </div>
+      <div class="servidor-count">${svs.length} servicio${svs.length!==1?'s':''} este mes</div>
+      <button class="notification-btn ${notifOn?'active':''}" onclick="toggleNotif(event,'${name}')">
+        ${notifOn ? '🔔 Notificaciones ON' : '🔕 Activar notificaciones'}
+      </button>
+    `;
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.notification-btn')) return;
+      showServidor(name);
+      document.querySelectorAll('.servidor-card').forEach(c=>c.classList.remove('selected'));
+      card.classList.add('selected');
+    });
+    grid.appendChild(card);
+  });
+
+  updateDatalist();
+}
+
+function showServidor(name) {
+  const svs = getServicesByServidor(name);
+  const detail = document.getElementById('servidor-detail');
+  const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  detail.classList.add('visible');
+
+  const today = todayStr();
+  const upcoming = svs.filter(s => s.fecha >= today);
+  const past = svs.filter(s => s.fecha < today);
+
+  let html = `
+    <div class="card">
+      <div class="detail-header">
+        <div class="avatar">${initials}</div>
+        <div>
+          <div class="card-title">${name}</div>
+          <div class="servidor-count">${upcoming.length} próximos · ${past.length} pasados</div>
+        </div>
+      </div>
+  `;
+
+  if (upcoming.length) {
+    html += `<p class="section-title" style="margin-top:0">Próximos Servicios</p>`;
+    upcoming.forEach(s => {
+      html += `
+        <div class="service-item">
+          <div class="dot"></div>
+          <div class="date">${formatDate(s.fecha)}</div>
+          <div>
+            <div class="role">${s.roles.join(' · ')}</div>
+            <div class="day-type">${s.tipo}</div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  if (past.length) {
+    html += `<p class="section-title">Servicios Pasados</p>`;
+    past.slice(-3).reverse().forEach(s => {
+      html += `
+        <div class="service-item" style="opacity:0.5">
+          <div class="dot" style="background:var(--text-muted)"></div>
+          <div class="date">${formatDate(s.fecha)}</div>
+          <div>
+            <div class="role">${s.roles.join(' · ')}</div>
+            <div class="day-type">${s.tipo}</div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  if (!svs.length) {
+    html += `<div class="empty-state">No hay servicios asignados</div>`;
+  }
+
+  html += '</div>';
+  detail.innerHTML = html;
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+async function toggleNotif(e, name) {
+  e.stopPropagation();
+  
+  if (notifSubscriptions[name]) {
+    delete notifSubscriptions[name];
+    saveNotifs();
+    renderServidores();
+    showToast('🔕 Notificaciones desactivadas para ' + name.split(' ')[0]);
+    return;
+  }
+
+  if (!('Notification' in window)) {
+    showToast('⚠️ Tu navegador no soporta notificaciones');
+    return;
+  }
+
+  const perm = await Notification.requestPermission();
+  if (perm === 'granted') {
+    notifSubscriptions[name] = true;
+    saveNotifs();
+    renderServidores();
+    showToast('🔔 Notificaciones activadas para ' + name.split(' ')[0]);
+    
+    // Schedule check
+    scheduleNotifications(name);
+  } else {
+    showToast('❌ Permiso de notificaciones denegado');
+  }
+}
+
+function scheduleNotifications(name) {
+  const svs = getServicesByServidor(name);
+  const today = todayStr();
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowStr = tomorrow.toISOString().slice(0,10);
+
+  svs.forEach(s => {
+    if (s.fecha === tomorrowStr) {
+      // Notify now about tomorrow
+      new Notification('⛪ IEHC · Recordatorio de Servicio', {
+        body: `${name}: mañana tienes ${s.roles.join(' y ')} (${s.tipo})`,
+        icon: 'icon-192.png',
+        tag: 'iehc-' + s.id
+      });
+    }
+  });
+}
+
+function sendBroadcast() {
+  if (Notification.permission !== 'granted') {
+    showToast('⚠️ Activa notificaciones primero en la sección Servidores');
+    return;
+  }
+  const next = getNextService();
+  if (!next) { showToast('No hay servicios próximos'); return; }
+  
+  Object.keys(notifSubscriptions).forEach(name => {
+    const svs = getServicesByServidor(name);
+    const nextSv = svs.find(s => s.fecha === next.fecha);
+    if (nextSv) {
+      new Notification('📅 IEHC · Próximo Servicio', {
+        body: `${name}: el ${formatDate(next.fecha)} tienes ${nextSv.roles.join(' y ')}`,
+        icon: 'icon-192.png',
+      });
+    }
+  });
+  showToast('✅ Recordatorios enviados');
+}
+
+// Daily check (runs on load)
+function checkDailyNotifications() {
+  if (Notification.permission !== 'granted') return;
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowStr = tomorrow.toISOString().slice(0,10);
+
+  Object.keys(notifSubscriptions).forEach(name => {
+    const svs = getServicesByServidor(name);
+    svs.forEach(s => {
+      if (s.fecha === tomorrowStr) {
+        new Notification('⛪ IEHC · Servicio Mañana', {
+          body: `Hola ${name.split(' ')[0]}! Mañana te toca ${s.roles.join(' y ')} en el servicio del ${s.tipo}`,
+          icon: 'icon-192.png',
+          tag: 'iehc-remind-' + s.id
+        });
+      }
+    });
+  });
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+let adminLoggedIn = sessionStorage.getItem('iehc_admin') === '1';
+
+function adminLogin() {
+  const pass = document.getElementById('admin-pass').value;
+  if (pass === PASS) {
+    adminLoggedIn = true;
+    sessionStorage.setItem('iehc_admin', '1');
+    document.getElementById('admin-gate-container').style.display = 'none';
+    document.getElementById('admin-panel').classList.add('visible');
+    renderAdminPanel();
+    showToast('✅ Acceso concedido');
+  } else {
+    showToast('❌ Contraseña incorrecta');
+  }
+}
+
+function adminLogout() {
+  adminLoggedIn = false;
+  sessionStorage.removeItem('iehc_admin');
+  document.getElementById('admin-gate-container').style.display = '';
+  document.getElementById('admin-panel').classList.remove('visible');
+  document.getElementById('admin-pass').value = '';
+}
+
+function renderAdminPanel() {
+  if (!adminLoggedIn) return;
+  
+  const servidores = getServidores();
+  document.getElementById('admin-stats').innerHTML = `
+    <div class="stat-card"><span class="stat-number">${services.length}</span><div class="stat-label">Servicios</div></div>
+    <div class="stat-card"><span class="stat-number">${servidores.length}</span><div class="stat-label">Servidores</div></div>
+    <div class="stat-card"><span class="stat-number">${Object.keys(notifSubscriptions).length}</span><div class="stat-label">Con Notif.</div></div>
+    <div class="stat-card"><span class="stat-number">${getMonths().length}</span><div class="stat-label">Meses</div></div>
+  `;
+
+  updateDatalist();
+  renderAdminList();
+}
+
+function renderAdminList() {
+  const container = document.getElementById('admin-services-list');
+  const sorted = [...services].sort((a,b) => a.fecha.localeCompare(b.fecha));
+  container.innerHTML = sorted.map(s => `
+    <div class="service-item" style="justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:1rem;flex:1">
+        <div class="dot"></div>
+        <div class="date">${formatDate(s.fecha)}</div>
+        <span class="service-chip">${s.tipo}</span>
+        <div style="font-size:0.82rem;color:var(--cream);flex:1">${s.direccion} · ${s.lectura}</div>
+      </div>
+      <button class="btn btn-danger" onclick="deleteService(${s.id})" style="padding:0.3rem 0.7rem;font-size:0.7rem">✕</button>
+    </div>
+  `).join('');
+}
+
+function updateDatalist() {
+  const list = document.getElementById('servidores-list');
+  if (!list) return;
+  list.innerHTML = getServidores().map(n => `<option value="${n}">`).join('');
+}
+
+function addService() {
+  const fecha = document.getElementById('new-fecha').value;
+  const tipo = document.getElementById('new-tipo').value;
+  const direccion = document.getElementById('new-direccion').value.trim();
+  const lectura = document.getElementById('new-lectura').value.trim();
+  const ofrenda = document.getElementById('new-ofrenda').value.trim();
+  const predicacion = document.getElementById('new-predicacion').value.trim();
+
+  if (!fecha || !direccion || !lectura || !ofrenda) {
+    showToast('⚠️ Completa fecha, dirección, lectura y ofrenda');
+    return;
+  }
+
+  const id = Date.now();
+  services.push({ id, fecha, tipo, direccion, lectura, ofrenda, predicacion });
+  saveServices();
+  renderAdminPanel();
+  // Clear fields
+  ['new-fecha','new-direccion','new-lectura','new-ofrenda','new-predicacion'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  showToast('✅ Servicio agregado');
+}
+
+function deleteService(id) {
+  services = services.filter(s => s.id !== id);
+  saveServices();
+  renderAdminPanel();
+  showToast('🗑️ Servicio eliminado');
+}
+
+function importCSV() {
+  const file = document.getElementById('csv-upload').files[0];
+  if (!file) { showToast('⚠️ Selecciona un archivo CSV'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const lines = e.target.result.split('\n').filter(l => l.trim());
+    const headers = lines[0].toLowerCase().split(',').map(h => h.trim());
+    let count = 0;
+    for (let i = 1; i < lines.length; i++) {
+      const vals = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g,''));
+      const obj = {};
+      headers.forEach((h, idx) => obj[h] = vals[idx] || '');
+      if (obj.fecha) {
+        services.push({
+          id: Date.now() + i,
+          fecha: obj.fecha,
+          tipo: obj.tipo || 'Domingo',
+          direccion: obj.direccion || '',
+          lectura: obj.lectura || '',
+          ofrenda: obj.ofrenda || '',
+          predicacion: obj.predicacion || ''
+        });
+        count++;
+      }
+    }
+    saveServices();
+    renderAdminPanel();
+    showToast(`✅ ${count} servicios importados`);
+  };
+  reader.readAsText(file);
+}
+
+// ============================================================
+// PWA INSTALL
+// ============================================================
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('pwa-install-btn').style.display = 'flex';
+});
+
+document.getElementById('pwa-install-btn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const result = await deferredPrompt.userChoice;
+  if (result.outcome === 'accepted') showToast('✅ App instalada');
+  deferredPrompt = null;
+  document.getElementById('pwa-install-btn').style.display = 'none';
+});
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  renderCalendar();
+
+  if (adminLoggedIn) {
+    document.getElementById('admin-gate-container').style.display = 'none';
+    document.getElementById('admin-panel').classList.add('visible');
+  }
+
+  // Check daily notifications
+  checkDailyNotifications();
+
+  // Register service worker
+  // Desregistrar service workers anteriores para forzar actualizaciones
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      regs.forEach(reg => reg.unregister());
+    });
+  }
+});
+
+// If admin was logged in and visits admin tab, auto-show panel
+function initAdminView() {
+  if (adminLoggedIn) {
+    document.getElementById('admin-gate-container').style.display = 'none';
+    document.getElementById('admin-panel').classList.add('visible');
+    renderAdminPanel();
+  }
+}
+</script>
+</body>
+</html>
