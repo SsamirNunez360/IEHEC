@@ -1166,22 +1166,14 @@ function getActMonths() {
 
 function renderActividades() {
   const sel = document.getElementById('act-month');
-  const months = getActMonths();
 
-  if (!months.length) {
-    sel.style.display = 'none';
-    document.getElementById('act-total').style.display = 'none';
-    document.getElementById('actividades-list').innerHTML = '<div class="empty-state">No hay actividades registradas aún.<br><span style="font-size:0.8rem">El administrador puede agregarlas desde el panel Admin.</span></div>';
-    return;
-  }
-
-  sel.style.display = '';
-  document.getElementById('act-total').style.display = '';
+  // Use service months as base so selector always has options
+  const allMonths = getMonths();
 
   if (!sel.options.length || sel.dataset.built !== '1') {
     sel.innerHTML = '';
     const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-    months.forEach(m => {
+    allMonths.forEach(m => {
       const [y,mo] = m.split('-');
       const opt = document.createElement('option');
       opt.value = m;
@@ -1190,8 +1182,8 @@ function renderActividades() {
     });
     sel.dataset.built = '1';
     const today = todayStr().slice(0,7);
-    if (months.includes(today)) sel.value = today;
-    else sel.value = months[0];
+    if (allMonths.includes(today)) sel.value = today;
+    else if (allMonths.length) sel.value = allMonths[0];
   }
 
   const month = sel.value;
@@ -1200,7 +1192,7 @@ function renderActividades() {
 
   const container = document.getElementById('actividades-list');
   if (!filtered.length) {
-    container.innerHTML = '<div class="empty-state">No hay actividades para este mes.</div>';
+    container.innerHTML = '<div class="empty-state">No hay actividades para este mes.<br><span style="font-size:0.8rem">El administrador puede agregarlas desde el panel Admin.</span></div>';
     return;
   }
 
@@ -1646,8 +1638,6 @@ function addActividad() {
     document.getElementById(id).value = '';
   });
   document.getElementById('new-act-destacada').checked = false;
-  // Reset month selector so it rebuilds
-  document.getElementById('act-month').dataset.built = '';
   showToast('✅ Actividad agregada');
 }
 
@@ -1655,7 +1645,6 @@ function deleteActividad(id) {
   actividades = actividades.filter(a => a.id !== id);
   saveActividades();
   renderAdminActividades();
-  document.getElementById('act-month').dataset.built = '';
   showToast('🗑️ Actividad eliminada');
 }
 
