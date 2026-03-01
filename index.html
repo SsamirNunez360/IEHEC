@@ -38,7 +38,6 @@
     overflow-x: hidden;
   }
 
-  /* Background pattern */
   body::before {
     content: '';
     position: fixed;
@@ -166,6 +165,109 @@
   .badge-gold { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
   .badge-blue { background: rgba(85,128,224,0.15); color: #88aaff; border: 1px solid rgba(85,128,224,0.3); }
   .badge-green { background: rgba(76,175,121,0.15); color: #7fd9a4; border: 1px solid rgba(76,175,121,0.3); }
+
+  /* ===== NEXT SERVICE BANNER ===== */
+  .next-service-banner {
+    background: linear-gradient(135deg, rgba(201,168,76,0.13) 0%, rgba(201,168,76,0.04) 100%);
+    border: 1px solid rgba(201,168,76,0.45);
+    border-radius: 14px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .next-service-banner::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    border-radius: 4px 0 0 4px;
+  }
+
+  .next-service-banner::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .next-service-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 10px rgba(201,168,76,0.45));
+  }
+
+  .next-service-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .next-service-date {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: var(--gold-light);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    text-shadow: 0 0 20px rgba(201,168,76,0.3);
+  }
+
+  .next-service-roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .next-role-chip {
+    font-size: 0.75rem;
+    padding: 0.22rem 0.7rem;
+    border-radius: 2rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--cream);
+    font-family: 'Crimson Pro', serif;
+  }
+
+  .next-role-chip strong {
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+
+  .next-service-tipo {
+    margin-left: auto;
+    flex-shrink: 0;
+    text-align: right;
+    align-self: flex-start;
+  }
+
+  .pulse-dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse-anim 2s infinite;
+    margin-right: 0.45rem;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  @keyframes pulse-anim {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(201,168,76,0.5); }
+    50% { opacity: 0.6; box-shadow: 0 0 0 5px rgba(201,168,76,0); }
+  }
 
   /* ===== SCHEDULE TABLE ===== */
   .schedule-table {
@@ -424,6 +526,8 @@
     .admin-row { grid-template-columns: 1fr 1fr; }
     .schedule-table { font-size: 0.78rem; }
     .schedule-table th, .schedule-table td { padding: 0.6rem 0.4rem; }
+    .next-service-banner { flex-wrap: wrap; }
+    .next-service-tipo { margin-left: 0; }
   }
 
   /* ===== NOTIFICATIONS TOAST ===== */
@@ -538,9 +642,6 @@
     font-style: italic;
   }
 
-  /* Next service highlight */
-
-
   #pwa-install-btn {
     display: none;
     position: fixed;
@@ -567,12 +668,26 @@
 <main>
   <!-- ============ CALENDARIO VIEW ============ -->
   <div id="view-calendario" class="view active">
+
+    <!-- PRÓXIMO SERVICIO BANNER -->
+    <div id="next-service-banner" class="next-service-banner" style="display:none">
+      <div class="next-service-icon">⛪</div>
+      <div style="flex:1; min-width:0;">
+        <div class="next-service-label"><span class="pulse-dot"></span>Próximo Servicio</div>
+        <div class="next-service-date" id="ns-date"></div>
+        <div class="next-service-roles" id="ns-roles"></div>
+      </div>
+      <div class="next-service-tipo">
+        <span class="badge badge-gold" id="ns-tipo"></span>
+      </div>
+    </div>
+
     <div class="month-selector">
       <select id="cal-month" onchange="renderCalendar()"></select>
       <span id="cal-total" class="badge badge-gold"></span>
     </div>
 
-<div class="card" style="padding:0; overflow:hidden;">
+    <div class="card" style="padding:0; overflow:hidden;">
       <div style="overflow-x:auto;">
         <table class="schedule-table">
           <thead>
@@ -697,7 +812,6 @@ if (storedVersion !== DATA_VERSION) {
 
 let services = JSON.parse(localStorage.getItem('iehc_services') || 'null');
 if (!services) {
-  // Default Feb 2026 data from the image
   services = [
     { id:1, fecha:'2026-02-01', tipo:'Domingo',  direccion:'Cinthia Rivera',    lectura:'Yanely Nuñez',      ofrenda:'Yeicob Viera',       predicacion:'Elmer Montoya' },
     { id:2, fecha:'2026-02-03', tipo:'Martes',   direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',      ofrenda:'Naomy Maldonado',    predicacion:'' },
@@ -858,7 +972,6 @@ if (!services) {
 }
 
 let notifSubscriptions = JSON.parse(localStorage.getItem('iehc_notifs') || '{}');
-// { 'Yanely Nuñez': true, ... }
 
 function saveServices() {
   localStorage.setItem('iehc_services', JSON.stringify(services));
@@ -935,6 +1048,27 @@ function showView(v) {
 // ============================================================
 // CALENDAR VIEW
 // ============================================================
+function renderNextServiceBanner() {
+  const nextSv = getNextService();
+  const banner = document.getElementById('next-service-banner');
+  if (!nextSv) { banner.style.display = 'none'; return; }
+
+  banner.style.display = 'flex';
+  document.getElementById('ns-date').textContent = formatDate(nextSv.fecha);
+  document.getElementById('ns-tipo').textContent = nextSv.tipo;
+
+  const roles = [
+    { label: 'Dirección', val: nextSv.direccion },
+    { label: 'Lectura', val: nextSv.lectura },
+    { label: 'Ofrenda', val: nextSv.ofrenda },
+    { label: 'Predicación', val: nextSv.predicacion },
+  ].filter(r => r.val);
+
+  document.getElementById('ns-roles').innerHTML = roles.map(r =>
+    `<span class="next-role-chip"><strong>${r.label}:</strong> ${r.val}</span>`
+  ).join('');
+}
+
 function renderCalendar() {
   const sel = document.getElementById('cal-month');
   const months = getMonths();
@@ -950,7 +1084,6 @@ function renderCalendar() {
       sel.appendChild(opt);
     });
     sel.dataset.built = '1';
-    // Default to current or closest month
     const today = todayStr().slice(0,7);
     if (months.includes(today)) sel.value = today;
     else if (months.length) sel.value = months[months.length-1];
@@ -982,7 +1115,8 @@ function renderCalendar() {
     tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem;font-style:italic;">No hay servicios programados para este mes</td></tr>';
   }
 
-
+  // Render banner always
+  renderNextServiceBanner();
 }
 
 // ============================================================
@@ -1110,8 +1244,6 @@ async function toggleNotif(e, name) {
     saveNotifs();
     renderServidores();
     showToast('🔔 Notificaciones activadas para ' + name.split(' ')[0]);
-    
-    // Schedule check
     scheduleNotifications(name);
   } else {
     showToast('❌ Permiso de notificaciones denegado');
@@ -1120,14 +1252,12 @@ async function toggleNotif(e, name) {
 
 function scheduleNotifications(name) {
   const svs = getServicesByServidor(name);
-  const today = todayStr();
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const tomorrowStr = tomorrow.toISOString().slice(0,10);
 
   svs.forEach(s => {
     if (s.fecha === tomorrowStr) {
-      // Notify now about tomorrow
       new Notification('⛪ IEHC · Recordatorio de Servicio', {
         body: `${name}: mañana tienes ${s.roles.join(' y ')} (${s.tipo})`,
         icon: 'icon-192.png',
@@ -1158,7 +1288,6 @@ function sendBroadcast() {
   showToast('✅ Recordatorios enviados');
 }
 
-// Daily check (runs on load)
 function checkDailyNotifications() {
   if (Notification.permission !== 'granted') return;
   const tomorrow = new Date();
@@ -1260,7 +1389,6 @@ function addService() {
   services.push({ id, fecha, tipo, direccion, lectura, ofrenda, predicacion });
   saveServices();
   renderAdminPanel();
-  // Clear fields
   ['new-fecha','new-direccion','new-lectura','new-ofrenda','new-predicacion'].forEach(id => {
     document.getElementById(id).value = '';
   });
@@ -1336,11 +1464,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('admin-panel').classList.add('visible');
   }
 
-  // Check daily notifications
   checkDailyNotifications();
 
-  // Register service worker
-  // Desregistrar service workers anteriores para forzar actualizaciones
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistrations().then(regs => {
       regs.forEach(reg => reg.unregister());
@@ -1348,7 +1473,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// If admin was logged in and visits admin tab, auto-show panel
 function initAdminView() {
   if (adminLoggedIn) {
     document.getElementById('admin-gate-container').style.display = 'none';
