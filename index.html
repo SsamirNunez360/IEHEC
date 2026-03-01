@@ -649,6 +649,106 @@
     right: 1rem;
     z-index: 100;
   }
+  /* ===== ACTIVIDADES ===== */
+  .actividad-card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .actividad-card:hover { border-color: rgba(201,168,76,0.4); }
+
+  .actividad-card.destacada {
+    border-color: rgba(201,168,76,0.45);
+    background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.02) 100%);
+  }
+
+  .actividad-card.destacada::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    border-radius: 4px 0 0 4px;
+  }
+
+  .actividad-date-block {
+    flex-shrink: 0;
+    text-align: center;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+    min-width: 56px;
+  }
+
+  .actividad-date-day {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+
+  .actividad-date-month {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.2rem;
+  }
+
+  .actividad-info { flex: 1; min-width: 0; }
+
+  .actividad-titulo {
+    font-family: 'Cinzel', serif;
+    font-size: 0.92rem;
+    color: var(--gold-light);
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+  }
+
+  .actividad-desc {
+    font-size: 0.88rem;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+    line-height: 1.5;
+  }
+
+  .actividad-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .actividad-hora {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'Cinzel', serif;
+  }
+
+  .actividad-lugar {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .badge-purple {
+    background: rgba(140,100,220,0.15);
+    color: #bb99ff;
+    border: 1px solid rgba(140,100,220,0.3);
+  }
+
 </style>
 </head>
 <body>
@@ -661,6 +761,7 @@
 
 <nav>
   <button class="tab active" onclick="showView('calendario')">📅 Calendario</button>
+  <button class="tab" onclick="showView('actividades')">🎯 Actividades</button>
   <button class="tab" onclick="showView('servidores')">🙏 Servidores</button>
   <button class="tab" onclick="showView('admin'); initAdminView()">⚙️ Admin</button>
 </nav>
@@ -706,6 +807,19 @@
     </div>
   </div>
 
+  <!-- ============ ACTIVIDADES VIEW ============ -->
+  <div id="view-actividades" class="view">
+
+    <div class="month-selector">
+      <select id="act-month" onchange="renderActividades()"></select>
+      <span id="act-total" class="badge badge-gold"></span>
+    </div>
+
+    <div id="actividades-list">
+      <div class="empty-state">No hay actividades registradas aún.</div>
+    </div>
+  </div>
+
   <!-- ============ SERVIDORES VIEW ============ -->
   <div id="view-servidores" class="view">
     <p class="section-title">Selecciona un servidor para ver su horario</p>
@@ -729,6 +843,56 @@
 
     <div id="admin-panel">
       <div class="stats-grid" id="admin-stats"></div>
+
+      <p class="section-title">Agregar Actividad</p>
+      <div class="card">
+        <div class="admin-row">
+          <div class="input-group" style="margin:0">
+            <label>Fecha</label>
+            <input type="date" id="new-act-fecha">
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Título</label>
+            <input type="text" id="new-act-titulo" placeholder="Nombre de la actividad">
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Hora</label>
+            <input type="time" id="new-act-hora">
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Tipo</label>
+            <select id="new-act-tipo">
+              <option value="">General</option>
+              <option>Evangelismo</option>
+              <option>Ayuno</option>
+              <option>Convivio</option>
+              <option>Conferencia</option>
+              <option>Especial</option>
+            </select>
+          </div>
+          <div></div>
+        </div>
+        <div class="admin-row">
+          <div class="input-group" style="margin:0; grid-column: span 2">
+            <label>Descripción</label>
+            <input type="text" id="new-act-descripcion" placeholder="Detalles opcionales">
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Lugar</label>
+            <input type="text" id="new-act-lugar" placeholder="Lugar opcional">
+          </div>
+          <div class="input-group" style="margin:0; display:flex; align-items:center; gap:0.5rem; padding-top:1.4rem">
+            <input type="checkbox" id="new-act-destacada" style="width:auto; padding:0">
+            <label style="margin:0; font-size:0.78rem; cursor:pointer" for="new-act-destacada">Destacada</label>
+          </div>
+          <button class="btn btn-primary" onclick="addActividad()" style="height:fit-content; align-self:end">+ Agregar</button>
+        </div>
+      </div>
+
+      <p class="section-title">Actividades Registradas</p>
+      <div id="admin-actividades-list"></div>
+
+      <div class="divider"></div>
 
       <p class="section-title">Agregar Servicio</p>
       <div class="card">
@@ -823,8 +987,8 @@ if (!services) {
     { id:8, fecha:'2026-02-17', tipo:'Martes',   direccion:'Sandy Gomez',       lectura:'Ana Gonzalez',      ofrenda:'Sandy Gomez',        predicacion:'' },
     { id:9, fecha:'2026-02-19', tipo:'Jueves',   direccion:'Cinthia Rivera',    lectura:'Estephanie Nuñez',   ofrenda:'Yeicob Viera',       predicacion:'Sindy Gonzalez' },
     { id:10,fecha:'2026-02-22', tipo:'Domingo',  direccion:'Ssamir Nuñez',      lectura:'Ssamir Nuñez',      ofrenda:'Estephanie Nuñez',    predicacion:'Victorino Ordoñez' },
-    { id:11,fecha:'2026-02-24', tipo:'Martes',   direccion:'Yanely Nuñez',      lectura:'Naomy Maldonado',   ofrenda:'Marcela Gonzalez',   predicacion:'' },
-    { id:12,fecha:'2026-02-26', tipo:'Jueves',   direccion:'Sindy Gonzalez',    lectura:'Yeicob Viera',      ofrenda:'Naomy Maldonado',    predicacion:'Elmer Montoya' },
+    { id:11,fecha:'2026-02-24', tipo:'Martes',   direccion:'Yanely Nuñez',      lectura:'Maicol',   ofrenda:'Marcela Gonzalez',   predicacion:'' },
+    { id:12,fecha:'2026-02-26', tipo:'Jueves',   direccion:'Sindy Gonzalez',    lectura:'Yeicob Viera',      ofrenda:'Maicol',    predicacion:'Elmer Montoya' },
     // Marzo 2026
     { id:13,fecha:'2026-03-01', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Sindy Gonzalez',  ofrenda:'Naomy Maldonado',  predicacion:'Elmer Montoya' },
     { id:14,fecha:'2026-03-03', tipo:'Martes',   direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Yeicob Viera',  predicacion:'' },
@@ -843,13 +1007,13 @@ if (!services) {
     // Abril 2026
     { id:27,fecha:'2026-04-02', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
     { id:28,fecha:'2026-04-05', tipo:'Domingo',  direccion:'Marta Gonzales',  lectura:'Estephanie Nuñez',  ofrenda:'Marcela Gonzalez',  predicacion:'Edwin Gomez' },
-    { id:29,fecha:'2026-04-07', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Naomy Maldonado',  predicacion:'' },
+    { id:29,fecha:'2026-04-07', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Maicol',  predicacion:'' },
     { id:30,fecha:'2026-04-09', tipo:'Jueves',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Estephanie Nuñez',  predicacion:'Cinthia Rivera' },
     { id:31,fecha:'2026-04-12', tipo:'Domingo',  direccion:'Cinthia Rivera',  lectura:'Yanely Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Elmer Montoya' },
     { id:32,fecha:'2026-04-14', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Yeicob Viera',  ofrenda:'Sandy Gomez',  predicacion:'' },
     { id:33,fecha:'2026-04-16', tipo:'Jueves',  direccion:'Cinthia Rivera',  lectura:'Estephanie Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Sindy Gonzalez' },
     { id:34,fecha:'2026-04-19', tipo:'Domingo',  direccion:'Ssamir Nuñez',  lectura:'Ssamir Nuñez',  ofrenda:'Estephanie Nuñez',  predicacion:'Victorino Ordoñez' },
-    { id:35,fecha:'2026-04-21', tipo:'Martes',  direccion:'Sandy Gomez',  lectura:'Ana Gonzalez',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:35,fecha:'2026-04-21', tipo:'Martes',  direccion:'Sandy Gomez',  lectura:'Maicol',  ofrenda:'Sandy Gomez',  predicacion:'' },
     { id:36,fecha:'2026-04-23', tipo:'Jueves',  direccion:'Sindy Gonzalez',  lectura:'Yeicob Viera',  ofrenda:'Naomy Maldonado',  predicacion:'Elmer Montoya' },
     { id:37,fecha:'2026-04-26', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
     { id:38,fecha:'2026-04-28', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Naomy Maldonado',  ofrenda:'Marcela Gonzalez',  predicacion:'' },
@@ -866,14 +1030,14 @@ if (!services) {
     { id:48,fecha:'2026-05-21', tipo:'Jueves',  direccion:'Cinthia Rivera',  lectura:'Estephanie Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Sindy Gonzalez' },
     { id:49,fecha:'2026-05-24', tipo:'Domingo',  direccion:'Ssamir Nuñez',  lectura:'Ssamir Nuñez',  ofrenda:'Estephanie Nuñez',  predicacion:'Victorino Ordoñez' },
     { id:50,fecha:'2026-05-26', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Naomy Maldonado',  ofrenda:'Marcela Gonzalez',  predicacion:'' },
-    { id:51,fecha:'2026-05-28', tipo:'Jueves',  direccion:'Sindy Gonzalez',  lectura:'Yeicob Viera',  ofrenda:'Naomy Maldonado',  predicacion:'Elmer Montoya' },
+    { id:51,fecha:'2026-05-28', tipo:'Jueves',  direccion:'Sindy Gonzalez',  lectura:'Yeicob Viera',  ofrenda:'Maicol',  predicacion:'Elmer Montoya' },
     { id:52,fecha:'2026-05-31', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
     // Junio 2026
     { id:53,fecha:'2026-06-02', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Naomy Maldonado',  predicacion:'' },
     { id:54,fecha:'2026-06-04', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
     { id:55,fecha:'2026-06-07', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
     { id:56,fecha:'2026-06-09', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Yeicob Viera',  ofrenda:'Sandy Gomez',  predicacion:'' },
-    { id:57,fecha:'2026-06-11', tipo:'Jueves',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Estephanie Nuñez',  predicacion:'Cinthia Rivera' },
+    { id:57,fecha:'2026-06-11', tipo:'Jueves',  direccion:'Marcela Gonzalez',  lectura:'Maicol',  ofrenda:'Estephanie Nuñez',  predicacion:'Cinthia Rivera' },
     { id:58,fecha:'2026-06-14', tipo:'Domingo',  direccion:'Marta Gonzales',  lectura:'Estephanie Nuñez',  ofrenda:'Marcela Gonzalez',  predicacion:'Edwin Gomez' },
     { id:59,fecha:'2026-06-16', tipo:'Martes',  direccion:'Sandy Gomez',  lectura:'Ana Gonzalez',  ofrenda:'Sandy Gomez',  predicacion:'' },
     { id:60,fecha:'2026-06-18', tipo:'Jueves',  direccion:'Cinthia Rivera',  lectura:'Estephanie Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Sindy Gonzalez' },
@@ -883,7 +1047,7 @@ if (!services) {
     { id:64,fecha:'2026-06-28', tipo:'Domingo',  direccion:'Ssamir Nuñez',  lectura:'Ssamir Nuñez',  ofrenda:'Estephanie Nuñez',  predicacion:'Victorino Ordoñez' },
     { id:65,fecha:'2026-06-30', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'' },
     // Julio 2026
-    { id:66,fecha:'2026-07-02', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
+    { id:66,fecha:'2026-07-02', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Maicol',  predicacion:'Marta Gonzales' },
     { id:67,fecha:'2026-07-05', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
     { id:68,fecha:'2026-07-07', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Naomy Maldonado',  predicacion:'' },
     { id:69,fecha:'2026-07-09', tipo:'Jueves',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Estephanie Nuñez',  predicacion:'Cinthia Rivera' },
@@ -898,8 +1062,8 @@ if (!services) {
     { id:78,fecha:'2026-07-30', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
     // Agosto 2026
     { id:79,fecha:'2026-08-02', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
-    { id:80,fecha:'2026-08-04', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Naomy Maldonado',  predicacion:'' },
-    { id:81,fecha:'2026-08-06', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
+    { id:80,fecha:'2026-08-04', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Maicol',  ofrenda:'Naomy Maldonado',  predicacion:'' },
+    { id:81,fecha:'2026-08-06', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Maicol',  predicacion:'Marta Gonzales' },
     { id:82,fecha:'2026-08-09', tipo:'Domingo',  direccion:'Marta Gonzales',  lectura:'Estephanie Nuñez',  ofrenda:'Marcela Gonzalez',  predicacion:'Edwin Gomez' },
     { id:83,fecha:'2026-08-11', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Yeicob Viera',  ofrenda:'Sandy Gomez',  predicacion:'' },
     { id:84,fecha:'2026-08-13', tipo:'Jueves',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Estephanie Nuñez',  predicacion:'Cinthia Rivera' },
@@ -920,10 +1084,10 @@ if (!services) {
     { id:98,fecha:'2026-09-15', tipo:'Martes',  direccion:'Sandy Gomez',  lectura:'Ana Gonzalez',  ofrenda:'Sandy Gomez',  predicacion:'' },
     { id:99,fecha:'2026-09-17', tipo:'Jueves',  direccion:'Cinthia Rivera',  lectura:'Estephanie Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Sindy Gonzalez' },
     { id:100,fecha:'2026-09-20', tipo:'Domingo',  direccion:'Cinthia Rivera',  lectura:'Yanely Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Elmer Montoya' },
-    { id:101,fecha:'2026-09-22', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Naomy Maldonado',  ofrenda:'Marcela Gonzalez',  predicacion:'' },
+    { id:101,fecha:'2026-09-22', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Maicol',  ofrenda:'Marcela Gonzalez',  predicacion:'' },
     { id:102,fecha:'2026-09-24', tipo:'Jueves',  direccion:'Sindy Gonzalez',  lectura:'Yeicob Viera',  ofrenda:'Naomy Maldonado',  predicacion:'Elmer Montoya' },
     { id:103,fecha:'2026-09-27', tipo:'Domingo',  direccion:'Ssamir Nuñez',  lectura:'Ssamir Nuñez',  ofrenda:'Estephanie Nuñez',  predicacion:'Victorino Ordoñez' },
-    { id:104,fecha:'2026-09-29', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'' },
+    { id:104,fecha:'2026-09-29', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Sandy Gomez',  ofrenda:'Maicol',  predicacion:'' },
     // Octubre 2026
     { id:105,fecha:'2026-10-01', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
     { id:106,fecha:'2026-10-04', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
@@ -940,13 +1104,13 @@ if (!services) {
     { id:117,fecha:'2026-10-29', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
     // Noviembre 2026
     { id:118,fecha:'2026-11-01', tipo:'Domingo',  direccion:'Sindy Gonzalez',  lectura:'Marcela Gonzalez',  ofrenda:'Ana Gonzalez',  predicacion:'Ssamir Nuñez' },
-    { id:119,fecha:'2026-11-03', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Naomy Maldonado',  predicacion:'' },
+    { id:119,fecha:'2026-11-03', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Maicol',  predicacion:'' },
     { id:120,fecha:'2026-11-05', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
     { id:121,fecha:'2026-11-08', tipo:'Domingo',  direccion:'Marta Gonzales',  lectura:'Estephanie Nuñez',  ofrenda:'Marcela Gonzalez',  predicacion:'Edwin Gomez' },
     { id:122,fecha:'2026-11-10', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Yeicob Viera',  ofrenda:'Sandy Gomez',  predicacion:'' },
     { id:123,fecha:'2026-11-12', tipo:'Jueves',  direccion:'Marcela Gonzalez',  lectura:'Ana Gonzalez',  ofrenda:'Estephanie Nuñez',  predicacion:'Cinthia Rivera' },
     { id:124,fecha:'2026-11-15', tipo:'Domingo',  direccion:'Cinthia Rivera',  lectura:'Yanely Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Elmer Montoya' },
-    { id:125,fecha:'2026-11-17', tipo:'Martes',  direccion:'Sandy Gomez',  lectura:'Ana Gonzalez',  ofrenda:'Sandy Gomez',  predicacion:'' },
+    { id:125,fecha:'2026-11-17', tipo:'Martes',  direccion:'Sandy Gomez',  lectura:'Maicol',  ofrenda:'Sandy Gomez',  predicacion:'' },
     { id:126,fecha:'2026-11-19', tipo:'Jueves',  direccion:'Cinthia Rivera',  lectura:'Estephanie Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Sindy Gonzalez' },
     { id:127,fecha:'2026-11-22', tipo:'Domingo',  direccion:'Ssamir Nuñez',  lectura:'Ssamir Nuñez',  ofrenda:'Estephanie Nuñez',  predicacion:'Victorino Ordoñez' },
     { id:128,fecha:'2026-11-24', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Naomy Maldonado',  ofrenda:'Marcela Gonzalez',  predicacion:'' },
@@ -963,7 +1127,7 @@ if (!services) {
     { id:138,fecha:'2026-12-17', tipo:'Jueves',  direccion:'Cinthia Rivera',  lectura:'Estephanie Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Sindy Gonzalez' },
     { id:139,fecha:'2026-12-20', tipo:'Domingo',  direccion:'Cinthia Rivera',  lectura:'Yanely Nuñez',  ofrenda:'Yeicob Viera',  predicacion:'Elmer Montoya' },
     { id:140,fecha:'2026-12-22', tipo:'Martes',  direccion:'Yanely Nuñez',  lectura:'Naomy Maldonado',  ofrenda:'Marcela Gonzalez',  predicacion:'' },
-    { id:141,fecha:'2026-12-24', tipo:'Jueves',  direccion:'Sindy Gonzalez',  lectura:'Yeicob Viera',  ofrenda:'Naomy Maldonado',  predicacion:'Elmer Montoya' },
+    { id:141,fecha:'2026-12-24', tipo:'Jueves',  direccion:'Sindy Gonzalez',  lectura:'Yeicob Viera',  ofrenda:'Maicol',  predicacion:'Elmer Montoya' },
     { id:142,fecha:'2026-12-27', tipo:'Domingo',  direccion:'Ssamir Nuñez',  lectura:'Ssamir Nuñez',  ofrenda:'Estephanie Nuñez',  predicacion:'Victorino Ordoñez' },
     { id:143,fecha:'2026-12-29', tipo:'Martes',  direccion:'Marcela Gonzalez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'' },
     { id:144,fecha:'2026-12-31', tipo:'Jueves',  direccion:'Yanely Nuñez',  lectura:'Sandy Gomez',  ofrenda:'Ana Gonzalez',  predicacion:'Marta Gonzales' },
@@ -982,8 +1146,94 @@ function saveNotifs() {
 }
 
 // ============================================================
-// HELPERS
+// ACTIVIDADES
 // ============================================================
+let actividades = JSON.parse(localStorage.getItem('iehc_actividades') || 'null');
+if (!actividades) {
+  // Empty — admin will add them
+  actividades = [];
+  localStorage.setItem('iehc_actividades', JSON.stringify(actividades));
+}
+
+function saveActividades() {
+  localStorage.setItem('iehc_actividades', JSON.stringify(actividades));
+}
+
+function getActMonths() {
+  if (!actividades.length) return [];
+  return [...new Set(actividades.map(a => a.fecha.slice(0,7)))].sort();
+}
+
+function renderActividades() {
+  const sel = document.getElementById('act-month');
+  const months = getActMonths();
+
+  if (!months.length) {
+    sel.style.display = 'none';
+    document.getElementById('act-total').style.display = 'none';
+    document.getElementById('actividades-list').innerHTML = '<div class="empty-state">No hay actividades registradas aún.<br><span style="font-size:0.8rem">El administrador puede agregarlas desde el panel Admin.</span></div>';
+    return;
+  }
+
+  sel.style.display = '';
+  document.getElementById('act-total').style.display = '';
+
+  if (!sel.options.length || sel.dataset.built !== '1') {
+    sel.innerHTML = '';
+    const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    months.forEach(m => {
+      const [y,mo] = m.split('-');
+      const opt = document.createElement('option');
+      opt.value = m;
+      opt.textContent = `${monthNames[parseInt(mo)-1]} ${y}`;
+      sel.appendChild(opt);
+    });
+    sel.dataset.built = '1';
+    const today = todayStr().slice(0,7);
+    if (months.includes(today)) sel.value = today;
+    else sel.value = months[0];
+  }
+
+  const month = sel.value;
+  const filtered = actividades.filter(a => a.fecha.startsWith(month)).sort((a,b) => a.fecha.localeCompare(b.fecha));
+  document.getElementById('act-total').textContent = filtered.length + ' actividad' + (filtered.length !== 1 ? 'es' : '');
+
+  const container = document.getElementById('actividades-list');
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty-state">No hay actividades para este mes.</div>';
+    return;
+  }
+
+  const monthNames2 = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const today = todayStr();
+
+  container.innerHTML = filtered.map(a => {
+    const [y,m,d] = a.fecha.split('-');
+    const isPast = a.fecha < today;
+    const isToday = a.fecha === today;
+    return `
+      <div class="actividad-card ${a.destacada ? 'destacada' : ''}" style="${isPast ? 'opacity:0.6' : ''}">
+        <div class="actividad-date-block">
+          <div class="actividad-date-day">${parseInt(d)}</div>
+          <div class="actividad-date-month">${monthNames2[parseInt(m)-1]}</div>
+        </div>
+        <div class="actividad-info">
+          <div class="actividad-titulo">${a.titulo}</div>
+          ${a.descripcion ? `<div class="actividad-desc">${a.descripcion}</div>` : ''}
+          <div class="actividad-meta">
+            ${a.hora ? `<span class="actividad-hora">🕐 ${a.hora}</span>` : ''}
+            ${a.lugar ? `<span class="actividad-lugar">📍 ${a.lugar}</span>` : ''}
+            ${isToday ? `<span class="badge badge-green">Hoy</span>` : ''}
+            ${a.destacada ? `<span class="badge badge-gold">Destacada</span>` : ''}
+            ${a.tipo ? `<span class="badge badge-purple">${a.tipo}</span>` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+
 function formatDate(str) {
   const [y,m,d] = str.split('-');
   const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
@@ -1042,6 +1292,7 @@ function showView(v) {
   event.target.classList.add('active');
 
   if (v === 'calendario') renderCalendar();
+  if (v === 'actividades') renderActividades();
   if (v === 'servidores') renderServidores();
 }
 
@@ -1348,6 +1599,7 @@ function renderAdminPanel() {
 
   updateDatalist();
   renderAdminList();
+  renderAdminActividades();
 }
 
 function renderAdminList() {
@@ -1372,7 +1624,62 @@ function updateDatalist() {
   list.innerHTML = getServidores().map(n => `<option value="${n}">`).join('');
 }
 
-function addService() {
+function addActividad() {
+  const fecha = document.getElementById('new-act-fecha').value;
+  const titulo = document.getElementById('new-act-titulo').value.trim();
+  const hora = document.getElementById('new-act-hora').value;
+  const tipo = document.getElementById('new-act-tipo').value;
+  const descripcion = document.getElementById('new-act-descripcion').value.trim();
+  const lugar = document.getElementById('new-act-lugar').value.trim();
+  const destacada = document.getElementById('new-act-destacada').checked;
+
+  if (!fecha || !titulo) {
+    showToast('⚠️ Completa fecha y título');
+    return;
+  }
+
+  actividades.push({ id: Date.now(), fecha, titulo, hora, tipo, descripcion, lugar, destacada });
+  saveActividades();
+  renderAdminActividades();
+  // Reset
+  ['new-act-fecha','new-act-titulo','new-act-hora','new-act-descripcion','new-act-lugar'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('new-act-destacada').checked = false;
+  // Reset month selector so it rebuilds
+  document.getElementById('act-month').dataset.built = '';
+  showToast('✅ Actividad agregada');
+}
+
+function deleteActividad(id) {
+  actividades = actividades.filter(a => a.id !== id);
+  saveActividades();
+  renderAdminActividades();
+  document.getElementById('act-month').dataset.built = '';
+  showToast('🗑️ Actividad eliminada');
+}
+
+function renderAdminActividades() {
+  const container = document.getElementById('admin-actividades-list');
+  if (!actividades.length) {
+    container.innerHTML = '<div class="empty-state" style="padding:1rem">No hay actividades aún.</div>';
+    return;
+  }
+  const sorted = [...actividades].sort((a,b) => a.fecha.localeCompare(b.fecha));
+  container.innerHTML = sorted.map(a => `
+    <div class="service-item" style="justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:1rem;flex:1">
+        <div class="dot" style="background:var(--blue)"></div>
+        <div class="date">${formatDate(a.fecha)}</div>
+        ${a.tipo ? `<span class="badge badge-purple">${a.tipo}</span>` : ''}
+        <div style="font-size:0.82rem;color:var(--cream);flex:1">${a.titulo}${a.hora ? ' · ' + a.hora : ''}</div>
+      </div>
+      <button class="btn btn-danger" onclick="deleteActividad(${a.id})" style="padding:0.3rem 0.7rem;font-size:0.7rem">✕</button>
+    </div>
+  `).join('');
+}
+
+
   const fecha = document.getElementById('new-fecha').value;
   const tipo = document.getElementById('new-tipo').value;
   const direccion = document.getElementById('new-direccion').value.trim();
