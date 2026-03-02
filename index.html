@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1a1a2e">
-<meta name="description" content="Programación de Servicios - Iglesia Evangélica Hermanos en Cristo">
+<meta name="description" content="Programación de Servicios y Actividades - Iglesia Evangélica Hermanos en Cristo">
 <link rel="manifest" href="manifest.json">
-<title>IEHC · Programación de Servicios</title>
+<title>IEHC · Programación</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
 <style>
@@ -649,6 +649,202 @@
     right: 1rem;
     z-index: 100;
   }
+
+  /* ===== ACTIVIDADES ===== */
+  .actividad-card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .actividad-card:hover { border-color: rgba(201,168,76,0.45); transform: translateY(-2px); }
+  .actividad-card.pasada { opacity: 0.52; }
+
+  .actividad-accent {
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .actividad-card.proxima .actividad-accent {
+    background: linear-gradient(90deg, #aaccff, var(--blue), transparent);
+    animation: shimmer 2.5s infinite;
+  }
+  @keyframes shimmer { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+  .actividad-inner {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .actividad-date-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 74px;
+    padding: 1rem 0.8rem;
+    background: linear-gradient(180deg, rgba(201,168,76,0.16) 0%, rgba(201,168,76,0.05) 100%);
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .actividad-date-block .dia-num {
+    font-family: 'Cinzel', serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .actividad-date-block .dia-mes {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-top: 0.15rem;
+  }
+  .actividad-date-block .dia-sem {
+    font-size: 0.67rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+    font-style: italic;
+  }
+
+  .actividad-body {
+    flex: 1;
+    padding: 0.9rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .actividad-titulo {
+    font-family: 'Cinzel', serif;
+    font-size: 0.92rem;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+  }
+  .actividad-desc {
+    font-size: 0.87rem;
+    color: var(--cream);
+    line-height: 1.45;
+  }
+  .actividad-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.2rem;
+  }
+  .actividad-chip {
+    font-size: 0.68rem;
+    padding: 0.13rem 0.58rem;
+    border-radius: 1rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.04em;
+  }
+  .chip-hora  { background: rgba(85,128,224,0.13); color: #99bbff; border: 1px solid rgba(85,128,224,0.25); }
+  .chip-lugar { background: rgba(76,175,121,0.12);  color: #7fd9a4; border: 1px solid rgba(76,175,121,0.25); }
+  .chip-tipo  { background: rgba(201,168,76,0.12);  color: var(--gold); border: 1px solid rgba(201,168,76,0.25); }
+
+  .proxima-actividad-banner {
+    background: linear-gradient(135deg, rgba(85,128,224,0.13) 0%, rgba(85,128,224,0.04) 100%);
+    border: 1px solid rgba(85,128,224,0.4);
+    border-radius: 14px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+  .proxima-actividad-banner::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #aaccff, var(--blue));
+    border-radius: 4px 0 0 4px;
+  }
+  .proxima-actividad-banner::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(85,128,224,0.09) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .pab-icon { font-size: 2rem; flex-shrink: 0; filter: drop-shadow(0 0 10px rgba(85,128,224,0.5)); }
+  .pab-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: #88aaff;
+    margin-bottom: 0.25rem;
+  }
+  .pab-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.05rem;
+    color: #cce0ff;
+    font-weight: 600;
+    margin-bottom: 0.45rem;
+    text-shadow: 0 0 20px rgba(85,128,224,0.4);
+  }
+  .pab-pulse {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #88aaff;
+    animation: pulse-anim 2s infinite;
+    margin-right: 0.45rem;
+    vertical-align: middle;
+    position: relative; top: -1px;
+  }
+
+  .act-filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .act-filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.07em;
+    padding: 0.35rem 0.9rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .act-filter-btn:hover { color: var(--gold); border-color: var(--gold); }
+  .act-filter-btn.active {
+    background: rgba(201,168,76,0.14);
+    color: var(--gold-light);
+    border-color: var(--gold);
+  }
+
+  .act-empty {
+    text-align: center;
+    padding: 3.5rem 1rem;
+    color: var(--text-muted);
+  }
+  .act-empty-icon { font-size: 2.5rem; display: block; margin-bottom: 0.8rem; opacity: 0.45; }
+
+  .admin-act-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  @media (max-width: 600px) {
+    .admin-act-row { grid-template-columns: 1fr; }
+    .actividad-date-block { min-width: 60px; }
+    .actividad-titulo { font-size: 0.85rem; }
+  }
 </style>
 </head>
 <body>
@@ -661,6 +857,7 @@
 
 <nav>
   <button class="tab active" onclick="showView('calendario')">📅 Calendario</button>
+  <button class="tab" onclick="showView('actividades')">🎉 Actividades</button>
   <button class="tab" onclick="showView('servidores')">🙏 Servidores</button>
   <button class="tab" onclick="showView('admin'); initAdminView()">⚙️ Admin</button>
 </nav>
@@ -704,6 +901,33 @@
         </table>
       </div>
     </div>
+  </div>
+
+  <!-- ============ ACTIVIDADES VIEW ============ -->
+  <div id="view-actividades" class="view">
+
+    <!-- PRÓXIMA ACTIVIDAD BANNER -->
+    <div id="proxima-act-banner" class="proxima-actividad-banner" style="display:none">
+      <div class="pab-icon">🎉</div>
+      <div style="flex:1; min-width:0;">
+        <div class="pab-label"><span class="pab-pulse"></span>Próxima Actividad</div>
+        <div class="pab-title" id="pab-titulo"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;" id="pab-meta"></div>
+      </div>
+      <div style="flex-shrink:0;align-self:flex-start;">
+        <span class="badge badge-blue" id="pab-tipo"></span>
+      </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="act-filter-bar" id="act-filter-bar">
+      <button class="act-filter-btn active" onclick="filterActividades('todas', this)">Todas</button>
+      <button class="act-filter-btn" onclick="filterActividades('proximas', this)">Próximas</button>
+      <button class="act-filter-btn" onclick="filterActividades('pasadas', this)">Pasadas</button>
+    </div>
+
+    <!-- LISTA -->
+    <div id="actividades-list"></div>
   </div>
 
   <!-- ============ SERVIDORES VIEW ============ -->
@@ -787,6 +1011,54 @@
 
       <p class="section-title">Servicios Programados</p>
       <div id="admin-services-list"></div>
+
+      <div class="divider"></div>
+
+      <p class="section-title">⚡ Gestionar Actividades</p>
+      <div class="card">
+        <div class="admin-act-row">
+          <div class="input-group" style="margin:0">
+            <label>Fecha</label>
+            <input type="date" id="act-fecha">
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Hora (opcional)</label>
+            <input type="time" id="act-hora" placeholder="Ej: 10:00">
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Tipo</label>
+            <select id="act-tipo">
+              <option>Reunión</option>
+              <option>Ayuno</option>
+              <option>Campaña</option>
+              <option>Retiro</option>
+              <option>Aniversario</option>
+              <option>Bautismo</option>
+              <option>Conferencia</option>
+              <option>Evangelismo</option>
+              <option>Especial</option>
+            </select>
+          </div>
+        </div>
+        <div class="admin-act-row">
+          <div class="input-group" style="margin:0">
+            <label>Título</label>
+            <input type="text" id="act-titulo" placeholder="Nombre de la actividad">
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Lugar (opcional)</label>
+            <input type="text" id="act-lugar" placeholder="Ej: Templo principal">
+          </div>
+          <div class="input-group" style="margin:0">
+            <label>Descripción (opcional)</label>
+            <input type="text" id="act-desc" placeholder="Detalles adicionales">
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="addActividad()" style="margin-top:0.3rem">+ Agregar Actividad</button>
+      </div>
+
+      <p class="section-title">Actividades Registradas</p>
+      <div id="admin-actividades-list"></div>
 
       <div class="divider"></div>
       <button class="btn btn-danger" onclick="adminLogout()">🚪 Cerrar Sesión Admin</button>
@@ -1044,6 +1316,7 @@ function showView(v) {
 
   if (v === 'calendario') renderCalendar();
   if (v === 'servidores') renderServidores();
+  if (v === 'actividades') renderActividades();
 }
 
 // ============================================================
@@ -1341,13 +1614,14 @@ function renderAdminPanel() {
   const servidores = getServidores();
   document.getElementById('admin-stats').innerHTML = `
     <div class="stat-card"><span class="stat-number">${services.length}</span><div class="stat-label">Servicios</div></div>
+    <div class="stat-card"><span class="stat-number">${actividades.length}</span><div class="stat-label">Actividades</div></div>
     <div class="stat-card"><span class="stat-number">${servidores.length}</span><div class="stat-label">Servidores</div></div>
     <div class="stat-card"><span class="stat-number">${Object.keys(notifSubscriptions).length}</span><div class="stat-label">Con Notif.</div></div>
-    <div class="stat-card"><span class="stat-number">${getMonths().length}</span><div class="stat-label">Meses</div></div>
   `;
 
   updateDatalist();
   renderAdminList();
+  renderAdminActividades();
 }
 
 function renderAdminList() {
@@ -1432,6 +1706,205 @@ function importCSV() {
     showToast(`✅ ${count} servicios importados`);
   };
   reader.readAsText(file);
+}
+
+// ============================================================
+// ACTIVIDADES DATA STORE
+// ============================================================
+let actividades = JSON.parse(localStorage.getItem('iehc_actividades') || '[]');
+
+function saveActividades() {
+  localStorage.setItem('iehc_actividades', JSON.stringify(actividades));
+}
+
+function getNextActividad() {
+  const today = todayStr();
+  return actividades.filter(a => a.fecha >= today).sort((a,b) => a.fecha.localeCompare(b.fecha))[0] || null;
+}
+
+const DIAS_SEM = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+const MESES_CORTOS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const MESES_LARGOS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function parseFechaLocal(str) {
+  const [y,m,d] = str.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+
+function formatActDate(str) {
+  const d = parseFechaLocal(str);
+  return { dia: d.getDate(), mes: MESES_CORTOS[d.getMonth()], sem: DIAS_SEM[d.getDay()] };
+}
+
+function formatActFull(str) {
+  const d = parseFechaLocal(str);
+  return `${d.getDate()} de ${MESES_LARGOS[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+// ============================================================
+// ACTIVIDADES VIEW
+// ============================================================
+let actFiltroActivo = 'todas';
+
+function renderActividades() {
+  renderProximaActBanner();
+  renderActividadesList(actFiltroActivo);
+  renderTypeFilters();
+}
+
+function renderProximaActBanner() {
+  const banner = document.getElementById('proxima-act-banner');
+  const next = getNextActividad();
+  if (!next) { banner.style.display = 'none'; return; }
+
+  banner.style.display = 'flex';
+  document.getElementById('pab-titulo').textContent = next.titulo;
+  document.getElementById('pab-tipo').textContent = next.tipo;
+
+  const chips = [];
+  chips.push(`<span class="next-role-chip">📅 ${formatActFull(next.fecha)}</span>`);
+  if (next.hora) chips.push(`<span class="next-role-chip">🕐 ${next.hora}</span>`);
+  if (next.lugar) chips.push(`<span class="next-role-chip">📍 ${next.lugar}</span>`);
+  document.getElementById('pab-meta').innerHTML = chips.join('');
+}
+
+function renderTypeFilters() {
+  const bar = document.getElementById('act-filter-bar');
+  const tipos = [...new Set(actividades.map(a => a.tipo))].sort();
+  // Remove old type filters, keep the first 3 static ones
+  const staticBtns = bar.querySelectorAll('.act-filter-btn');
+  staticBtns.forEach((b,i) => { if (i >= 3) b.remove(); });
+
+  tipos.forEach(tipo => {
+    if (!bar.querySelector(`[data-tipo="${tipo}"]`)) {
+      const btn = document.createElement('button');
+      btn.className = 'act-filter-btn';
+      btn.dataset.tipo = tipo;
+      btn.textContent = tipo;
+      btn.onclick = function() { filterActividades(tipo, this); };
+      bar.appendChild(btn);
+    }
+  });
+}
+
+function filterActividades(filtro, btn) {
+  actFiltroActivo = filtro;
+  document.querySelectorAll('.act-filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderActividadesList(filtro);
+}
+
+function renderActividadesList(filtro) {
+  const container = document.getElementById('actividades-list');
+  const today = todayStr();
+
+  let lista = [...actividades].sort((a,b) => a.fecha.localeCompare(b.fecha));
+
+  if (filtro === 'proximas') {
+    lista = lista.filter(a => a.fecha >= today);
+  } else if (filtro === 'pasadas') {
+    lista = lista.filter(a => a.fecha < today).reverse();
+  } else if (filtro !== 'todas') {
+    lista = lista.filter(a => a.tipo === filtro);
+  }
+
+  if (!lista.length) {
+    container.innerHTML = `
+      <div class="act-empty">
+        <span class="act-empty-icon">📋</span>
+        <p>${actividades.length === 0
+          ? 'Aún no hay actividades registradas.<br>El administrador puede añadirlas desde el panel Admin.'
+          : 'No hay actividades para este filtro.'
+        }</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = lista.map(a => {
+    const { dia, mes, sem } = formatActDate(a.fecha);
+    const isPast = a.fecha < today;
+    const isNext = getNextActividad()?.id === a.id;
+
+    return `
+      <div class="actividad-card ${isPast ? 'pasada' : ''} ${isNext ? 'proxima' : ''}">
+        <div class="actividad-accent"></div>
+        <div class="actividad-inner">
+          <div class="actividad-date-block">
+            <span class="dia-num">${dia}</span>
+            <span class="dia-mes">${mes}</span>
+            <span class="dia-sem">${sem}</span>
+          </div>
+          <div class="actividad-body">
+            <div class="actividad-titulo">${a.titulo}</div>
+            ${a.desc ? `<div class="actividad-desc">${a.desc}</div>` : ''}
+            <div class="actividad-meta">
+              <span class="actividad-chip chip-tipo">${a.tipo}</span>
+              ${a.hora ? `<span class="actividad-chip chip-hora">🕐 ${a.hora}</span>` : ''}
+              ${a.lugar ? `<span class="actividad-chip chip-lugar">📍 ${a.lugar}</span>` : ''}
+              ${isPast ? `<span class="actividad-chip" style="background:rgba(136,136,170,0.1);color:var(--text-muted);border:1px solid rgba(136,136,170,0.2);">Realizada</span>` : ''}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============================================================
+// ADMIN ACTIVIDADES
+// ============================================================
+function addActividad() {
+  const fecha   = document.getElementById('act-fecha').value;
+  const hora    = document.getElementById('act-hora').value;
+  const tipo    = document.getElementById('act-tipo').value;
+  const titulo  = document.getElementById('act-titulo').value.trim();
+  const lugar   = document.getElementById('act-lugar').value.trim();
+  const desc    = document.getElementById('act-desc').value.trim();
+
+  if (!fecha || !titulo) {
+    showToast('⚠️ Completa al menos la fecha y el título');
+    return;
+  }
+
+  actividades.push({ id: Date.now(), fecha, hora, tipo, titulo, lugar, desc });
+  saveActividades();
+  renderAdminActividades();
+  renderTypeFilters();
+
+  ['act-fecha','act-hora','act-titulo','act-lugar','act-desc'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  showToast('✅ Actividad agregada');
+}
+
+function deleteActividad(id) {
+  actividades = actividades.filter(a => a.id !== id);
+  saveActividades();
+  renderAdminActividades();
+  showToast('🗑️ Actividad eliminada');
+}
+
+function renderAdminActividades() {
+  const container = document.getElementById('admin-actividades-list');
+  if (!container) return;
+
+  if (!actividades.length) {
+    container.innerHTML = '<div class="empty-state" style="padding:1.5rem;font-style:italic;color:var(--text-muted);">No hay actividades registradas aún.</div>';
+    return;
+  }
+
+  const sorted = [...actividades].sort((a,b) => a.fecha.localeCompare(b.fecha));
+  container.innerHTML = sorted.map(a => `
+    <div class="service-item" style="justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:1rem;flex:1;min-width:0">
+        <div class="dot" style="background:var(--blue)"></div>
+        <div class="date">${formatDate(a.fecha)}</div>
+        <span class="service-chip" style="background:rgba(85,128,224,0.12);color:#99bbff;border-color:rgba(85,128,224,0.25)">${a.tipo}</span>
+        <div style="font-size:0.82rem;color:var(--cream);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${a.titulo}${a.lugar ? ' · ' + a.lugar : ''}</div>
+      </div>
+      <button class="btn btn-danger" onclick="deleteActividad(${a.id})" style="padding:0.3rem 0.7rem;font-size:0.7rem;flex-shrink:0">✕</button>
+    </div>
+  `).join('');
 }
 
 // ============================================================
