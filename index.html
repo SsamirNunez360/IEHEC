@@ -522,9 +522,213 @@
     margin-bottom: 0.5rem;
   }
 
-  /* ====================================================
-     RESPONSIVE — Mobile-first complete overhaul
-     ==================================================== */
+  /* ===== TOGGLE VISTA CALENDARIO ===== */
+  .cal-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .cal-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .view-toggle {
+    display: flex;
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .view-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 0.45rem 0.75rem;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+  }
+
+  .view-toggle-btn:first-child {
+    border-right: 1px solid var(--border);
+  }
+
+  .view-toggle-btn.active {
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  .view-toggle-btn:not(.active):hover {
+    color: var(--gold);
+    background: rgba(201,168,76,0.08);
+  }
+
+  /* ===== SERVICE CARDS (modo tarjeta) ===== */
+  .service-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .service-card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.25s, transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+
+  .service-card:hover {
+    border-color: rgba(201,168,76,0.45);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  }
+
+  .service-card.is-today {
+    border-color: rgba(201,168,76,0.6);
+    box-shadow: 0 0 0 1px rgba(201,168,76,0.2);
+  }
+
+  .service-card-top {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .service-card-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+    padding: 0.9rem 0.7rem;
+    background: linear-gradient(180deg, rgba(201,168,76,0.18) 0%, rgba(201,168,76,0.06) 100%);
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .service-card.is-today .service-card-date {
+    background: linear-gradient(180deg, rgba(201,168,76,0.32) 0%, rgba(201,168,76,0.12) 100%);
+  }
+
+  .sc-day-num {
+    font-family: 'Cinzel', serif;
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+
+  .sc-month {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-top: 0.12rem;
+  }
+
+  .sc-weekday {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 0.18rem;
+    font-style: italic;
+  }
+
+  .service-card-meta {
+    flex: 1;
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+
+  .sc-tipo-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .sc-today-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 0.1rem 0.5rem;
+    border-radius: 1rem;
+    animation: pulse-anim 2s infinite;
+  }
+
+  .service-card-roles {
+    padding: 0.75rem 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .sc-role-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .sc-role-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.56rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .sc-role-name {
+    font-size: 0.82rem;
+    color: var(--cream);
+    line-height: 1.3;
+  }
+
+  .sc-role-name.empty { color: var(--text-muted); font-style: italic; }
+
+  .service-card-accent {
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .service-card.is-today .service-card-accent {
+    background: linear-gradient(90deg, var(--gold-light), var(--gold), transparent);
+    animation: shimmer 2s infinite;
+  }
+
+  @media (max-width: 480px) {
+    .service-cards-grid { grid-template-columns: 1fr; }
+    .cal-toolbar { gap: 0.5rem; }
+    .view-toggle-btn { font-size: 0.6rem; padding: 0.4rem 0.6rem; }
+  }
+
+  @media (max-width: 360px) {
+    .service-card-roles { grid-template-columns: 1fr; }
+  }
 
   /* ── Tablet (≤768px) ── */
   @media (max-width: 768px) {
@@ -608,51 +812,6 @@
   @media (max-width: 480px) {
     header { padding: 1.4rem 0.8rem 1.1rem; }
     main { padding: 1rem 0.7rem 6rem; }
-
-    /* Tabla calendario → modo tarjetas apiladas */
-    .schedule-table thead { display: none; }
-    .schedule-table, .schedule-table tbody,
-    .schedule-table tr, .schedule-table td { display: block; width: 100%; }
-
-    .schedule-table tr {
-      background: var(--dark2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      margin-bottom: 0.7rem;
-      padding: 0.75rem 0.9rem;
-      position: relative;
-    }
-    .schedule-table tr.today-row {
-      background: rgba(201,168,76,0.08);
-      border-color: rgba(201,168,76,0.5);
-      border-left: 4px solid var(--gold);
-    }
-    .schedule-table td {
-      padding: 0.25rem 0;
-      border: none;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-    }
-    .schedule-table td::before {
-      content: attr(data-label);
-      font-family: 'Cinzel', serif;
-      font-size: 0.58rem;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      min-width: 72px;
-      flex-shrink: 0;
-    }
-    .schedule-table td.date-cell { font-size: 0.82rem; font-weight: 600; }
-    /* Primera celda (fecha) va en la parte superior destacada */
-    .schedule-table td:first-child {
-      font-size: 0.9rem;
-      margin-bottom: 0.3rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
 
     /* Cards generales */
     .card { padding: 1rem; border-radius: 10px; }
@@ -1087,28 +1246,23 @@
       </div>
     </div>
 
-    <div class="month-selector">
-      <select id="cal-month" onchange="renderCalendar()"></select>
-      <span id="cal-total" class="badge badge-gold"></span>
-    </div>
-
-    <div class="card" style="padding:0; overflow:hidden;">
-      <div style="overflow-x:auto;">
-        <table class="schedule-table">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Tipo</th>
-              <th>Dirección</th>
-              <th>Lectura</th>
-              <th>Ofrenda</th>
-              <th>Predicación</th>
-            </tr>
-          </thead>
-          <tbody id="calendar-tbody"></tbody>
-        </table>
+    <div class="cal-toolbar">
+      <div class="cal-toolbar-left">
+        <select id="cal-month" onchange="renderCalendar()"></select>
+        <span id="cal-total" class="badge badge-gold"></span>
+      </div>
+      <div class="view-toggle">
+        <button class="view-toggle-btn active" id="btn-tabla" onclick="setCalView('tabla')" title="Vista tabla">
+          ☰ Tabla
+        </button>
+        <button class="view-toggle-btn" id="btn-tarjetas" onclick="setCalView('tarjetas')" title="Vista tarjetas">
+          ⊞ Tarjetas
+        </button>
       </div>
     </div>
+
+    <!-- Contenedor dinámico: tabla o tarjetas -->
+    <div id="cal-content"></div>
   </div>
 
   <!-- ============ ACTIVIDADES VIEW ============ -->
@@ -1554,10 +1708,23 @@ function renderNextServiceBanner() {
   ).join('');
 }
 
+let calViewMode = localStorage.getItem('iehc_cal_view') || 'tabla';
+
+function setCalView(mode) {
+  calViewMode = mode;
+  localStorage.setItem('iehc_cal_view', mode);
+  document.getElementById('btn-tabla').classList.toggle('active', mode === 'tabla');
+  document.getElementById('btn-tarjetas').classList.toggle('active', mode === 'tarjetas');
+  const month = document.getElementById('cal-month').value;
+  const filtered = services.filter(s => s.fecha.startsWith(month)).sort((a,b) => a.fecha.localeCompare(b.fecha));
+  if (mode === 'tabla') renderCalTable(filtered);
+  else renderCalCards(filtered);
+}
+
 function renderCalendar() {
   const sel = document.getElementById('cal-month');
   const months = getMonths();
-  
+
   if (!sel.options.length || sel.dataset.built !== '1') {
     sel.innerHTML = '';
     const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -1574,33 +1741,119 @@ function renderCalendar() {
     else if (months.length) sel.value = months[months.length-1];
   }
 
+  // Restore saved view mode
+  document.getElementById('btn-tabla').classList.toggle('active', calViewMode === 'tabla');
+  document.getElementById('btn-tarjetas').classList.toggle('active', calViewMode === 'tarjetas');
+
   const month = sel.value;
   const filtered = services.filter(s => s.fecha.startsWith(month)).sort((a,b) => a.fecha.localeCompare(b.fecha));
   document.getElementById('cal-total').textContent = filtered.length + ' servicios';
 
-  const tbody = document.getElementById('calendar-tbody');
-  tbody.innerHTML = '';
-  const today = todayStr();
+  if (calViewMode === 'tabla') renderCalTable(filtered);
+  else renderCalCards(filtered);
 
-  filtered.forEach(s => {
-    const tr = document.createElement('tr');
-    if (s.fecha === today) tr.classList.add('today-row');
-    tr.innerHTML = `
+  renderNextServiceBanner();
+}
+
+const DIAS_CAL = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+const MESES_CAL = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+function parseFechaCalendar(str) {
+  const [y,m,d] = str.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+
+function renderCalTable(filtered) {
+  const today = todayStr();
+  const container = document.getElementById('cal-content');
+
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty-state">No hay servicios programados para este mes</div>';
+    return;
+  }
+
+  const rows = filtered.map(s => {
+    const isToday = s.fecha === today;
+    return `<tr${isToday ? ' class="today-row"' : ''}>
       <td class="date-cell" data-label="Fecha">${formatDate(s.fecha)}</td>
       <td data-label="Tipo"><span class="service-chip">${s.tipo}</span></td>
       <td data-label="Dirección">${s.direccion}</td>
       <td data-label="Lectura">${s.lectura}</td>
       <td data-label="Ofrenda">${s.ofrenda}</td>
       <td data-label="Predicación">${s.predicacion || '<span style="color:var(--text-muted)">—</span>'}</td>
-    `;
-    tbody.appendChild(tr);
-  });
+    </tr>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="card" style="padding:0; overflow:hidden;">
+      <div style="overflow-x:auto;">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Fecha</th><th>Tipo</th><th>Dirección</th>
+              <th>Lectura</th><th>Ofrenda</th><th>Predicación</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function renderCalCards(filtered) {
+  const today = todayStr();
+  const container = document.getElementById('cal-content');
 
   if (!filtered.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem;font-style:italic;">No hay servicios programados para este mes</td></tr>';
+    container.innerHTML = '<div class="empty-state">No hay servicios programados para este mes</div>';
+    return;
   }
 
-  renderNextServiceBanner();
+  const cards = filtered.map(s => {
+    const isToday = s.fecha === today;
+    const d = parseFechaCalendar(s.fecha);
+    const dayNum = d.getDate();
+    const monthStr = MESES_CAL[d.getMonth()];
+    const weekStr = DIAS_CAL[d.getDay()];
+
+    return `
+      <div class="service-card${isToday ? ' is-today' : ''}">
+        <div class="service-card-accent"></div>
+        <div class="service-card-top">
+          <div class="service-card-date">
+            <span class="sc-day-num">${dayNum}</span>
+            <span class="sc-month">${monthStr}</span>
+            <span class="sc-weekday">${weekStr}</span>
+          </div>
+          <div class="service-card-meta">
+            <div class="sc-tipo-row">
+              <span class="service-chip">${s.tipo}</span>
+              ${isToday ? '<span class="sc-today-badge">● Hoy</span>' : ''}
+            </div>
+          </div>
+        </div>
+        <div class="service-card-roles">
+          <div class="sc-role-item">
+            <span class="sc-role-label">Dirección</span>
+            <span class="sc-role-name">${s.direccion}</span>
+          </div>
+          <div class="sc-role-item">
+            <span class="sc-role-label">Lectura</span>
+            <span class="sc-role-name">${s.lectura}</span>
+          </div>
+          <div class="sc-role-item">
+            <span class="sc-role-label">Ofrenda</span>
+            <span class="sc-role-name">${s.ofrenda}</span>
+          </div>
+          <div class="sc-role-item">
+            <span class="sc-role-label">Predicación</span>
+            <span class="sc-role-name${!s.predicacion ? ' empty' : ''}">${s.predicacion || '—'}</span>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  container.innerHTML = `<div class="service-cards-grid">${cards}</div>`;
 }
 
 // ============================================================
