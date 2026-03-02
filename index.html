@@ -446,82 +446,6 @@
   .service-item .role { font-size: 0.85rem; color: var(--cream); }
   .service-item .day-type { font-size: 0.72rem; color: var(--text-muted); font-style: italic; }
 
-  /* ===== ADMIN PANEL ===== */
-  .admin-gate {
-    max-width: 360px;
-    margin: 3rem auto;
-    text-align: center;
-  }
-
-  .admin-gate h2 {
-    font-family: 'Cinzel', serif;
-    color: var(--gold-light);
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    letter-spacing: 0.1em;
-  }
-
-  .input-group {
-    margin-bottom: 1rem;
-    text-align: left;
-  }
-
-  .input-group label {
-    display: block;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    font-family: 'Cinzel', serif;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.4rem;
-    text-transform: uppercase;
-  }
-
-  input, select {
-    width: 100%;
-    background: var(--dark3);
-    border: 1px solid var(--border);
-    color: var(--white);
-    padding: 0.7rem 1rem;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-family: 'Crimson Pro', serif;
-    transition: border-color 0.3s;
-    outline: none;
-  }
-
-  input:focus, select:focus { border-color: var(--gold); }
-  select option { background: var(--dark2); }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.7rem 1.5rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-family: 'Cinzel', serif;
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    transition: all 0.3s;
-  }
-
-  .btn-primary { background: var(--gold); color: var(--dark); }
-  .btn-primary:hover { background: var(--gold-light); }
-  .btn-danger { background: rgba(224,85,85,0.15); color: var(--red); border: 1px solid rgba(224,85,85,0.3); }
-  .btn-danger:hover { background: rgba(224,85,85,0.25); }
-  .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--border); }
-  .btn-outline:hover { border-color: var(--gold); }
-
-  .admin-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr auto;
-    gap: 0.5rem;
-    align-items: end;
-    margin-bottom: 0.5rem;
-  }
-
   /* ===== TOGGLE VISTA CALENDARIO ===== */
   .cal-toolbar {
     display: flex;
@@ -792,13 +716,7 @@
     .month-selector { flex-wrap: wrap; gap: 0.5rem; }
     .month-selector select { font-size: 0.85rem; }
 
-    /* Admin rows */
-    .admin-row { grid-template-columns: 1fr 1fr; }
-    .admin-act-row { grid-template-columns: 1fr 1fr; }
 
-    /* Stats */
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .stat-number { font-size: 1.5rem; }
 
     /* Servidores grid */
     .servidor-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
@@ -817,17 +735,11 @@
     .card { padding: 1rem; border-radius: 10px; }
 
     /* Admin rows en columna única */
-    .admin-row { grid-template-columns: 1fr; }
-    .admin-act-row { grid-template-columns: 1fr; }
 
     /* Servidor grid en columna */
     .servidor-grid { grid-template-columns: 1fr; }
 
     /* Stats en 2 columnas compactas */
-    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
-    .stat-card { padding: 0.75rem; }
-    .stat-number { font-size: 1.35rem; }
-    .stat-label { font-size: 0.68rem; }
 
     /* Banners */
     .next-service-banner { padding: 0.9rem; }
@@ -851,7 +763,6 @@
     #pwa-install-btn { bottom: 5rem; right: 0.75rem; font-size: 0.72rem; padding: 0.5rem 1rem; }
 
     /* Admin gate */
-    .admin-gate { margin: 1.5rem auto; }
 
     /* Service items */
     .service-item { padding: 0.65rem 0.75rem; gap: 0.6rem; }
@@ -879,9 +790,6 @@
   @media (min-width: 1024px) {
     main { max-width: 960px; padding: 2rem 1.5rem 4rem; }
     .servidor-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-    .stats-grid { grid-template-columns: repeat(4, 1fr); }
-    .admin-row { grid-template-columns: 1fr 1fr 1fr 1fr auto; }
-    .admin-act-row { grid-template-columns: 1fr 1fr 1fr; }
     header h1 { font-size: 1.5rem; }
   }
 
@@ -939,14 +847,12 @@
     font-style: italic;
   }
 
-  .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: 0.8rem;
     margin-bottom: 1.5rem;
   }
 
-  .stat-card {
     background: var(--dark2);
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -954,14 +860,12 @@
     text-align: center;
   }
 
-  .stat-number {
     font-family: 'Cinzel', serif;
     font-size: 1.8rem;
     color: var(--gold-light);
     display: block;
   }
 
-  .stat-label {
     font-size: 0.75rem;
     color: var(--text-muted);
     margin-top: 0.2rem;
@@ -987,10 +891,7 @@
     margin: 1.5rem 0;
   }
 
-  #admin-panel { display: none; }
-  #admin-panel.visible { display: block; }
 
-  .help-text {
     font-size: 0.8rem;
     color: var(--text-muted);
     margin-top: 0.3rem;
@@ -1206,7 +1107,6 @@
     .tab { font-size: 1.1rem; }
   }
 
-  .admin-act-row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 0.5rem;
@@ -1226,7 +1126,7 @@
   <button class="tab active" onclick="showView('calendario')">📅<span class="tab-label"> Calendario</span></button>
   <button class="tab" onclick="showView('actividades')">🎉<span class="tab-label"> Actividades</span></button>
   <button class="tab" onclick="showView('servidores')">🙏<span class="tab-label"> Servidores</span></button>
-  <button class="tab" onclick="showView('admin'); initAdminView()">⚙️<span class="tab-label"> Admin</span></button>
+
 </nav>
 
 <main>
@@ -1299,133 +1199,6 @@
     <div id="servidor-detail"></div>
   </div>
 
-  <!-- ============ ADMIN VIEW ============ -->
-  <div id="view-admin" class="view">
-    <div id="admin-gate-container">
-      <div class="admin-gate">
-        <h2>🔐 Acceso Administrativo</h2>
-        <div class="input-group">
-          <label>Contraseña</label>
-          <input type="password" id="admin-pass" placeholder="Ingresa la contraseña" onkeydown="if(event.key==='Enter')adminLogin()">
-        </div>
-        <button class="btn btn-primary" onclick="adminLogin()" style="width:100%">Ingresar</button>
-        <p class="help-text" style="margin-top:0.8rem; text-align:center">Contraseña inicial: <strong style="color:var(--gold)">iehc2026</strong></p>
-      </div>
-    </div>
-
-    <div id="admin-panel">
-      <div class="stats-grid" id="admin-stats"></div>
-
-      <p class="section-title">Agregar Servicio</p>
-      <div class="card">
-        <div class="admin-row" id="add-row">
-          <div class="input-group" style="margin:0">
-            <label>Fecha</label>
-            <input type="date" id="new-fecha">
-          </div>
-          <div class="input-group" style="margin:0">
-            <label>Tipo</label>
-            <select id="new-tipo">
-              <option>Domingo</option>
-              <option>Martes</option>
-              <option>Jueves</option>
-              <option>Especial</option>
-            </select>
-          </div>
-          <div class="input-group" style="margin:0">
-            <label>Dirección</label>
-            <input type="text" id="new-direccion" placeholder="Nombre" list="servidores-list">
-          </div>
-          <div class="input-group" style="margin:0">
-            <label>Lectura Bíblica</label>
-            <input type="text" id="new-lectura" placeholder="Nombre" list="servidores-list">
-          </div>
-          <div></div>
-        </div>
-        <div class="admin-row">
-          <div class="input-group" style="margin:0">
-            <label>Ofrenda</label>
-            <input type="text" id="new-ofrenda" placeholder="Nombre" list="servidores-list">
-          </div>
-          <div class="input-group" style="margin:0">
-            <label>Predicación</label>
-            <input type="text" id="new-predicacion" placeholder="Nombre o vacío" list="servidores-list">
-          </div>
-          <div></div>
-          <div></div>
-          <button class="btn btn-primary" onclick="addService()" style="height:fit-content; align-self:end">+ Agregar</button>
-        </div>
-        <datalist id="servidores-list"></datalist>
-      </div>
-
-      <p class="section-title">Importar Programación (CSV)</p>
-      <div class="card">
-        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.8rem;">Puedes subir un archivo CSV con columnas: fecha, tipo, direccion, lectura, ofrenda, predicacion</p>
-        <input type="file" id="csv-upload" accept=".csv" style="margin-bottom:0.8rem;">
-        <button class="btn btn-outline" onclick="importCSV()">📂 Importar CSV</button>
-      </div>
-
-      <p class="section-title">Notificar Servidores</p>
-      <div class="card">
-        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Enviar recordatorio a todos los servidores con notificaciones activas</p>
-        <button class="btn btn-primary" onclick="sendBroadcast()">📣 Enviar Recordatorio General</button>
-      </div>
-
-      <p class="section-title">Servicios Programados</p>
-      <div id="admin-services-list"></div>
-
-      <div class="divider"></div>
-
-      <p class="section-title">⚡ Gestionar Actividades</p>
-      <div class="card">
-        <div class="admin-act-row">
-          <div class="input-group" style="margin:0">
-            <label>Fecha</label>
-            <input type="date" id="act-fecha">
-          </div>
-          <div class="input-group" style="margin:0">
-            <label>Hora (opcional)</label>
-            <input type="time" id="act-hora" placeholder="Ej: 10:00">
-          </div>
-          <div class="input-group" style="margin:0">
-            <label>Tipo</label>
-            <select id="act-tipo">
-              <option>Reunión</option>
-              <option>Ayuno</option>
-              <option>Campaña</option>
-              <option>Retiro</option>
-              <option>Aniversario</option>
-              <option>Bautismo</option>
-              <option>Conferencia</option>
-              <option>Evangelismo</option>
-              <option>Especial</option>
-            </select>
-          </div>
-        </div>
-        <div class="admin-act-row">
-          <div class="input-group" style="margin:0">
-            <label>Título</label>
-            <input type="text" id="act-titulo" placeholder="Nombre de la actividad">
-          </div>
-          <div class="input-group" style="margin:0">
-            <label>Lugar (opcional)</label>
-            <input type="text" id="act-lugar" placeholder="Ej: Templo principal">
-          </div>
-          <div class="input-group" style="margin:0">
-            <label>Descripción (opcional)</label>
-            <input type="text" id="act-desc" placeholder="Detalles adicionales">
-          </div>
-        </div>
-        <button class="btn btn-primary" onclick="addActividad()" style="margin-top:0.3rem">+ Agregar Actividad</button>
-      </div>
-
-      <p class="section-title">Actividades Registradas</p>
-      <div id="admin-actividades-list"></div>
-
-      <div class="divider"></div>
-      <button class="btn btn-danger" onclick="adminLogout()">🚪 Cerrar Sesión Admin</button>
-    </div>
-  </div>
 </main>
 
 <div id="toast"></div>
@@ -1435,8 +1208,6 @@
 // ============================================================
 // DATA STORE
 // ============================================================
-const PASS = 'iehc2026';
-
 const DATA_VERSION = '2026-v12';
 const storedVersion = localStorage.getItem('iehc_data_version');
 if (storedVersion !== DATA_VERSION) {
@@ -2004,27 +1775,6 @@ function scheduleNotifications(name) {
   });
 }
 
-function sendBroadcast() {
-  if (Notification.permission !== 'granted') {
-    showToast('⚠️ Activa notificaciones primero en la sección Servidores');
-    return;
-  }
-  const next = getNextService();
-  if (!next) { showToast('No hay servicios próximos'); return; }
-  
-  Object.keys(notifSubscriptions).forEach(name => {
-    const svs = getServicesByServidor(name);
-    const nextSv = svs.find(s => s.fecha === next.fecha);
-    if (nextSv) {
-      new Notification('📅 IEHC · Próximo Servicio', {
-        body: `${name}: el ${formatDate(next.fecha)} tienes ${nextSv.roles.join(' y ')}`,
-        icon: 'icon-192.png',
-      });
-    }
-  });
-  showToast('✅ Recordatorios enviados');
-}
-
 function checkDailyNotifications() {
   if (Notification.permission !== 'granted') return;
   const tomorrow = new Date();
@@ -2046,136 +1796,29 @@ function checkDailyNotifications() {
 }
 
 // ============================================================
-// ADMIN
-// ============================================================
-let adminLoggedIn = sessionStorage.getItem('iehc_admin') === '1';
-
-function adminLogin() {
-  const pass = document.getElementById('admin-pass').value;
-  if (pass === PASS) {
-    adminLoggedIn = true;
-    sessionStorage.setItem('iehc_admin', '1');
-    document.getElementById('admin-gate-container').style.display = 'none';
-    document.getElementById('admin-panel').classList.add('visible');
-    renderAdminPanel();
-    showToast('✅ Acceso concedido');
-  } else {
-    showToast('❌ Contraseña incorrecta');
-  }
-}
-
-function adminLogout() {
-  adminLoggedIn = false;
-  sessionStorage.removeItem('iehc_admin');
-  document.getElementById('admin-gate-container').style.display = '';
-  document.getElementById('admin-panel').classList.remove('visible');
-  document.getElementById('admin-pass').value = '';
-}
-
-function renderAdminPanel() {
-  if (!adminLoggedIn) return;
-  
-  const servidores = getServidores();
-  document.getElementById('admin-stats').innerHTML = `
-    <div class="stat-card"><span class="stat-number">${services.length}</span><div class="stat-label">Servicios</div></div>
-    <div class="stat-card"><span class="stat-number">${actividades.length}</span><div class="stat-label">Actividades</div></div>
-    <div class="stat-card"><span class="stat-number">${servidores.length}</span><div class="stat-label">Servidores</div></div>
-    <div class="stat-card"><span class="stat-number">${Object.keys(notifSubscriptions).length}</span><div class="stat-label">Con Notif.</div></div>
-  `;
-
-  updateDatalist();
-  renderAdminList();
-  renderAdminActividades();
-}
-
-function renderAdminList() {
-  const container = document.getElementById('admin-services-list');
-  const sorted = [...services].sort((a,b) => a.fecha.localeCompare(b.fecha));
-  container.innerHTML = sorted.map(s => `
-    <div class="service-item" style="justify-content:space-between">
-      <div style="display:flex;align-items:center;gap:1rem;flex:1">
-        <div class="dot"></div>
-        <div class="date">${formatDate(s.fecha)}</div>
-        <span class="service-chip">${s.tipo}</span>
-        <div style="font-size:0.82rem;color:var(--cream);flex:1">${s.direccion} · ${s.lectura}</div>
-      </div>
-      <button class="btn btn-danger" onclick="deleteService(${s.id})" style="padding:0.3rem 0.7rem;font-size:0.7rem">✕</button>
-    </div>
-  `).join('');
-}
-
-function updateDatalist() {
-  const list = document.getElementById('servidores-list');
-  if (!list) return;
-  list.innerHTML = getServidores().map(n => `<option value="${n}">`).join('');
-}
-
-function addService() {
-  const fecha = document.getElementById('new-fecha').value;
-  const tipo = document.getElementById('new-tipo').value;
-  const direccion = document.getElementById('new-direccion').value.trim();
-  const lectura = document.getElementById('new-lectura').value.trim();
-  const ofrenda = document.getElementById('new-ofrenda').value.trim();
-  const predicacion = document.getElementById('new-predicacion').value.trim();
-
-  if (!fecha || !direccion || !lectura || !ofrenda) {
-    showToast('⚠️ Completa fecha, dirección, lectura y ofrenda');
-    return;
-  }
-
-  const id = Date.now();
-  services.push({ id, fecha, tipo, direccion, lectura, ofrenda, predicacion });
-  saveServices();
-  renderAdminPanel();
-  ['new-fecha','new-direccion','new-lectura','new-ofrenda','new-predicacion'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  showToast('✅ Servicio agregado');
-}
-
-function deleteService(id) {
-  services = services.filter(s => s.id !== id);
-  saveServices();
-  renderAdminPanel();
-  showToast('🗑️ Servicio eliminado');
-}
-
-function importCSV() {
-  const file = document.getElementById('csv-upload').files[0];
-  if (!file) { showToast('⚠️ Selecciona un archivo CSV'); return; }
-  const reader = new FileReader();
-  reader.onload = e => {
-    const lines = e.target.result.split('\n').filter(l => l.trim());
-    const headers = lines[0].toLowerCase().split(',').map(h => h.trim());
-    let count = 0;
-    for (let i = 1; i < lines.length; i++) {
-      const vals = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g,''));
-      const obj = {};
-      headers.forEach((h, idx) => obj[h] = vals[idx] || '');
-      if (obj.fecha) {
-        services.push({
-          id: Date.now() + i,
-          fecha: obj.fecha,
-          tipo: obj.tipo || 'Domingo',
-          direccion: obj.direccion || '',
-          lectura: obj.lectura || '',
-          ofrenda: obj.ofrenda || '',
-          predicacion: obj.predicacion || ''
-        });
-        count++;
-      }
-    }
-    saveServices();
-    renderAdminPanel();
-    showToast(`✅ ${count} servicios importados`);
-  };
-  reader.readAsText(file);
-}
-
-// ============================================================
 // ACTIVIDADES DATA STORE
 // ============================================================
-let actividades = JSON.parse(localStorage.getItem('iehc_actividades') || '[]');
+const ACT_VERSION = '2026-act-v3';
+if (localStorage.getItem('iehc_act_version') !== ACT_VERSION) {
+  localStorage.removeItem('iehc_actividades');
+  localStorage.setItem('iehc_act_version', ACT_VERSION);
+}
+
+let actividades = JSON.parse(localStorage.getItem('iehc_actividades') || 'null');
+if (!actividades) {
+  actividades = [
+    { id:1,  fecha:'2026-03-01', hora:'',        tipo:'Reunión',     titulo:'Reunión Concilio',            lugar:'',                desc:'' },
+    { id:2,  fecha:'2026-03-04', hora:'5:30 PM', tipo:'Evangelismo', titulo:'Visita a Hogares',             lugar:'',                desc:'' },
+    { id:3,  fecha:'2026-03-07', hora:'5:30 PM', tipo:'Especial',    titulo:'Culto en Casa de Luz',         lugar:'Casa de Luz',     desc:'' },
+    { id:4,  fecha:'2026-03-09', hora:'',        tipo:'Evangelismo', titulo:'Visita a Hogares',             lugar:'',                desc:'' },
+    { id:5,  fecha:'2026-03-15', hora:'',        tipo:'Especial',    titulo:'Culto en El Jícaro',           lugar:'El Jícaro',       desc:'' },
+    { id:6,  fecha:'2026-03-16', hora:'',        tipo:'Reunión',     titulo:'Reunión de Servidores',        lugar:'',                desc:'' },
+    { id:7,  fecha:'2026-03-21', hora:'',        tipo:'Especial',    titulo:'Devocional',                   lugar:'',                desc:'' },
+    { id:8,  fecha:'2026-03-22', hora:'5:00 PM', tipo:'Especial',    titulo:'Día del Padre — Celebración', lugar:'',                desc:'' },
+    { id:9,  fecha:'2026-03-29', hora:'',        tipo:'Ayuno',       titulo:'Día de Ayuno',                 lugar:'',                desc:'' },
+  ];
+  saveActividades();
+}
 
 function saveActividades() {
   localStorage.setItem('iehc_actividades', JSON.stringify(actividades));
@@ -2190,7 +1833,16 @@ const DIAS_SEM = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const MESES_CORTOS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const MESES_LARGOS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-function parseFechaLocal(str) {
+function format12h(hora) {
+  if (!hora) return '';
+  // Already in 12h format (e.g. "5:30 PM")
+  if (/[AP]M/i.test(hora)) return hora;
+  // Convert from 24h (HH:MM)
+  const [h, m] = hora.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return `${h12}:${String(m).padStart(2,'0')} ${period}`;
+}
   const [y,m,d] = str.split('-').map(Number);
   return new Date(y, m-1, d);
 }
@@ -2227,7 +1879,7 @@ function renderProximaActBanner() {
 
   const chips = [];
   chips.push(`<span class="next-role-chip">📅 ${formatActFull(next.fecha)}</span>`);
-  if (next.hora) chips.push(`<span class="next-role-chip">🕐 ${next.hora}</span>`);
+  if (next.hora) chips.push(`<span class="next-role-chip">🕐 ${format12h(next.hora)}</span>`);
   if (next.lugar) chips.push(`<span class="next-role-chip">📍 ${next.lugar}</span>`);
   document.getElementById('pab-meta').innerHTML = chips.join('');
 }
@@ -2277,7 +1929,7 @@ function renderActividadesList(filtro) {
       <div class="act-empty">
         <span class="act-empty-icon">📋</span>
         <p>${actividades.length === 0
-          ? 'Aún no hay actividades registradas.<br>El administrador puede añadirlas desde el panel Admin.'
+          ? 'Aún no hay actividades registradas.'
           : 'No hay actividades para este filtro.'
         }</p>
       </div>`;
@@ -2303,7 +1955,7 @@ function renderActividadesList(filtro) {
             ${a.desc ? `<div class="actividad-desc">${a.desc}</div>` : ''}
             <div class="actividad-meta">
               <span class="actividad-chip chip-tipo">${a.tipo}</span>
-              ${a.hora ? `<span class="actividad-chip chip-hora">🕐 ${a.hora}</span>` : ''}
+              ${a.hora ? `<span class="actividad-chip chip-hora">🕐 ${format12h(a.hora)}</span>` : ''}
               ${a.lugar ? `<span class="actividad-chip chip-lugar">📍 ${a.lugar}</span>` : ''}
               ${isPast ? `<span class="actividad-chip" style="background:rgba(136,136,170,0.1);color:var(--text-muted);border:1px solid rgba(136,136,170,0.2);">Realizada</span>` : ''}
             </div>
@@ -2312,63 +1964,6 @@ function renderActividadesList(filtro) {
       </div>
     `;
   }).join('');
-}
-
-// ============================================================
-// ADMIN ACTIVIDADES
-// ============================================================
-function addActividad() {
-  const fecha   = document.getElementById('act-fecha').value;
-  const hora    = document.getElementById('act-hora').value;
-  const tipo    = document.getElementById('act-tipo').value;
-  const titulo  = document.getElementById('act-titulo').value.trim();
-  const lugar   = document.getElementById('act-lugar').value.trim();
-  const desc    = document.getElementById('act-desc').value.trim();
-
-  if (!fecha || !titulo) {
-    showToast('⚠️ Completa al menos la fecha y el título');
-    return;
-  }
-
-  actividades.push({ id: Date.now(), fecha, hora, tipo, titulo, lugar, desc });
-  saveActividades();
-  renderAdminActividades();
-  renderTypeFilters();
-
-  ['act-fecha','act-hora','act-titulo','act-lugar','act-desc'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  showToast('✅ Actividad agregada');
-}
-
-function deleteActividad(id) {
-  actividades = actividades.filter(a => a.id !== id);
-  saveActividades();
-  renderAdminActividades();
-  showToast('🗑️ Actividad eliminada');
-}
-
-function renderAdminActividades() {
-  const container = document.getElementById('admin-actividades-list');
-  if (!container) return;
-
-  if (!actividades.length) {
-    container.innerHTML = '<div class="empty-state" style="padding:1.5rem;font-style:italic;color:var(--text-muted);">No hay actividades registradas aún.</div>';
-    return;
-  }
-
-  const sorted = [...actividades].sort((a,b) => a.fecha.localeCompare(b.fecha));
-  container.innerHTML = sorted.map(a => `
-    <div class="service-item" style="justify-content:space-between">
-      <div style="display:flex;align-items:center;gap:1rem;flex:1;min-width:0">
-        <div class="dot" style="background:var(--blue)"></div>
-        <div class="date">${formatDate(a.fecha)}</div>
-        <span class="service-chip" style="background:rgba(85,128,224,0.12);color:#99bbff;border-color:rgba(85,128,224,0.25)">${a.tipo}</span>
-        <div style="font-size:0.82rem;color:var(--cream);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${a.titulo}${a.lugar ? ' · ' + a.lugar : ''}</div>
-      </div>
-      <button class="btn btn-danger" onclick="deleteActividad(${a.id})" style="padding:0.3rem 0.7rem;font-size:0.7rem;flex-shrink:0">✕</button>
-    </div>
-  `).join('');
 }
 
 // ============================================================
@@ -2395,12 +1990,6 @@ document.getElementById('pwa-install-btn').addEventListener('click', async () =>
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
   renderCalendar();
-
-  if (adminLoggedIn) {
-    document.getElementById('admin-gate-container').style.display = 'none';
-    document.getElementById('admin-panel').classList.add('visible');
-  }
-
   checkDailyNotifications();
 
   if ('serviceWorker' in navigator) {
@@ -2409,14 +1998,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-
-function initAdminView() {
-  if (adminLoggedIn) {
-    document.getElementById('admin-gate-container').style.display = 'none';
-    document.getElementById('admin-panel').classList.add('visible');
-    renderAdminPanel();
-  }
-}
 </script>
 </body>
 </html>
