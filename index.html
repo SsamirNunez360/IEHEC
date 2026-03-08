@@ -1112,6 +1112,176 @@
     color: var(--text-muted);
     font-style: italic;
   }
+
+  /* ===== ASEO MODULE ===== */
+  .proxima-aseo-banner {
+    background: linear-gradient(135deg, rgba(76,175,121,0.13) 0%, rgba(76,175,121,0.04) 100%);
+    border: 1px solid rgba(76,175,121,0.4);
+    border-radius: 14px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+  .proxima-aseo-banner::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #a0e8c0, var(--green));
+    border-radius: 4px 0 0 4px;
+  }
+  .proxima-aseo-banner::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(76,175,121,0.09) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .aseo-banner-icon { font-size: 2rem; flex-shrink: 0; filter: drop-shadow(0 0 10px rgba(76,175,121,0.5)); }
+  .aseo-banner-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: #7fd9a4;
+    margin-bottom: 0.25rem;
+  }
+  .aseo-banner-familia {
+    font-family: 'Cinzel', serif;
+    font-size: 1.05rem;
+    color: #c5f0d8;
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+    text-shadow: 0 0 20px rgba(76,175,121,0.4);
+  }
+  .aseo-pulse {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #7fd9a4;
+    animation: pulse-anim 2s infinite;
+    margin-right: 0.45rem;
+    vertical-align: middle;
+    position: relative; top: -1px;
+  }
+
+  .aseo-card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 0.85rem;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .aseo-card:hover { border-color: rgba(76,175,121,0.45); transform: translateY(-2px); }
+  .aseo-card.pasada { opacity: 0.5; }
+  .aseo-card.proxima { border-color: rgba(76,175,121,0.55); }
+
+  .aseo-accent {
+    height: 3px;
+    background: linear-gradient(90deg, var(--green), transparent);
+  }
+  .aseo-card.proxima .aseo-accent {
+    background: linear-gradient(90deg, #a0e8c0, var(--green), transparent);
+    animation: shimmer 2.5s infinite;
+  }
+
+  .aseo-inner {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .aseo-date-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 74px;
+    padding: 1rem 0.8rem;
+    background: linear-gradient(180deg, rgba(76,175,121,0.16) 0%, rgba(76,175,121,0.05) 100%);
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .aseo-date-block .dia-num {
+    font-family: 'Cinzel', serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #7fd9a4;
+    line-height: 1;
+  }
+  .aseo-date-block .dia-mes {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-top: 0.15rem;
+  }
+  .aseo-date-block .dia-sem {
+    font-size: 0.67rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+    font-style: italic;
+  }
+
+  .aseo-body {
+    flex: 1;
+    padding: 0.9rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    justify-content: center;
+  }
+  .aseo-familia-nombre {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: #c5f0d8;
+    letter-spacing: 0.04em;
+  }
+  .aseo-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.2rem;
+  }
+  .aseo-chip {
+    font-size: 0.68rem;
+    padding: 0.13rem 0.58rem;
+    border-radius: 1rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.04em;
+    background: rgba(76,175,121,0.12);
+    color: #7fd9a4;
+    border: 1px solid rgba(76,175,121,0.25);
+  }
+  .aseo-chip-today {
+    background: rgba(201,168,76,0.14);
+    color: var(--gold-light);
+    border: 1px solid rgba(201,168,76,0.3);
+    animation: pulse-anim 2s infinite;
+  }
+  .aseo-chip-past {
+    background: rgba(136,136,170,0.1);
+    color: var(--text-muted);
+    border: 1px solid rgba(136,136,170,0.2);
+  }
+
+  @media (max-width: 480px) {
+    .aseo-date-block { min-width: 58px; padding: 0.75rem 0.6rem; }
+    .aseo-date-block .dia-num { font-size: 1.4rem; }
+    .aseo-body { padding: 0.75rem 0.9rem; }
+    .aseo-banner-icon { display: none; }
+  }
+  @media (max-width: 360px) {
+    .aseo-date-block { min-width: 52px; }
+    .aseo-date-block .dia-num { font-size: 1.2rem; }
+  }
 </style>
 </head>
 <body>
@@ -1126,6 +1296,7 @@
   <button class="tab active" onclick="showView('calendario')">📅<span class="tab-label"> Calendario</span></button>
   <button class="tab" onclick="showView('actividades')">🎉<span class="tab-label"> Actividades</span></button>
   <button class="tab" onclick="showView('servidores')">🙏<span class="tab-label"> Servidores</span></button>
+  <button class="tab" onclick="showView('aseo')">🧹<span class="tab-label"> Aseo</span></button>
 </nav>
 
 <main>
@@ -1196,6 +1367,33 @@
     <p class="section-title">Selecciona un servidor para ver su horario</p>
     <div class="servidor-grid" id="servidor-grid"></div>
     <div id="servidor-detail"></div>
+  </div>
+
+  <!-- ============ ASEO VIEW ============ -->
+  <div id="view-aseo" class="view">
+
+    <!-- PROXIMA FAMILIA BANNER -->
+    <div id="proxima-aseo-banner" class="proxima-aseo-banner" style="display:none">
+      <div class="aseo-banner-icon">🧹</div>
+      <div style="flex:1;min-width:0;">
+        <div class="aseo-banner-label"><span class="aseo-pulse"></span>Próxima Familia</div>
+        <div class="aseo-banner-familia" id="pab-aseo-familia"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.3rem;" id="pab-aseo-meta"></div>
+      </div>
+      <div style="flex-shrink:0;align-self:flex-start;">
+        <span class="badge badge-green" id="pab-aseo-badge">Aseo</span>
+      </div>
+    </div>
+
+    <!-- MES SELECTOR -->
+    <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1.2rem;flex-wrap:wrap;">
+      <select id="aseo-month-sel" onchange="renderAseo()" style="background:var(--dark2);border:1px solid var(--border);color:var(--cream);padding:0.5rem 1rem;border-radius:8px;font-family:'Cinzel',serif;font-size:0.75rem;cursor:pointer;"></select>
+      <span id="aseo-total" class="badge badge-green"></span>
+    </div>
+
+    <!-- LISTA ASEO -->
+    <div id="aseo-list"></div>
+
   </div>
 
 </main>
@@ -1459,6 +1657,7 @@ function showView(v) {
   if (v === 'calendario') renderCalendar();
   if (v === 'servidores') renderServidores();
   if (v === 'actividades') renderActividades();
+  if (v === 'aseo') renderAseo();
 }
 
 // ============================================================
@@ -1967,6 +2166,139 @@ function renderActividadesList(filtro) {
               ${a.hora ? `<span class="actividad-chip chip-hora">🕐 ${format12h(a.hora)}</span>` : ''}
               ${a.lugar ? `<span class="actividad-chip chip-lugar">📍 ${a.lugar}</span>` : ''}
               ${isPast ? `<span class="actividad-chip" style="background:rgba(136,136,170,0.1);color:var(--text-muted);border:1px solid rgba(136,136,170,0.2);">Realizada</span>` : ''}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============================================================
+// ASEO DATA STORE
+// ============================================================
+const ASEO_VERSION = '2026-aseo-v1';
+if (localStorage.getItem('iehc_aseo_version') !== ASEO_VERSION) {
+  localStorage.removeItem('iehc_aseo');
+  localStorage.setItem('iehc_aseo_version', ASEO_VERSION);
+}
+
+let aseoData = JSON.parse(localStorage.getItem('iehc_aseo') || 'null');
+if (!aseoData) {
+  aseoData = [
+    // Marzo 2026
+    { id:1,  fecha:'2026-03-01', familia:'Montoya-Gonzalez' },
+    { id:2,  fecha:'2026-03-08', familia:'Gonzalez-Rivera'  },
+    { id:3,  fecha:'2026-03-15', familia:'Nuñez-Izaguirre'  },
+    { id:4,  fecha:'2026-03-22', familia:'Gonzalez-Escoto'  },
+    { id:5,  fecha:'2026-03-29', familia:'Gomez-Gonzales'   },
+  ];
+  saveAseo();
+}
+
+function saveAseo() {
+  localStorage.setItem('iehc_aseo', JSON.stringify(aseoData));
+}
+
+function getNextAseo() {
+  const today = todayStr();
+  return aseoData.filter(a => a.fecha >= today).sort((a,b) => a.fecha.localeCompare(b.fecha))[0] || null;
+}
+
+function getAseoMonths() {
+  return [...new Set(aseoData.map(a => a.fecha.slice(0,7)))].sort();
+}
+
+// ============================================================
+// ASEO VIEW
+// ============================================================
+function renderAseo() {
+  renderProximaAseoBanner();
+  renderAseoMonthSelector();
+  renderAseoList();
+}
+
+function renderProximaAseoBanner() {
+  const banner = document.getElementById('proxima-aseo-banner');
+  const next = getNextAseo();
+  if (!next) { banner.style.display = 'none'; return; }
+
+  banner.style.display = 'flex';
+  document.getElementById('pab-aseo-familia').textContent = next.familia;
+
+  const chips = [];
+  chips.push(`<span class="next-role-chip">📅 ${formatActFull(next.fecha)}</span>`);
+  const { sem } = formatActDate(next.fecha);
+  chips.push(`<span class="next-role-chip">📆 ${sem}</span>`);
+  document.getElementById('pab-aseo-meta').innerHTML = chips.join('');
+}
+
+function renderAseoMonthSelector() {
+  const sel = document.getElementById('aseo-month-sel');
+  const months = getAseoMonths();
+  const curVal = sel.value;
+
+  sel.innerHTML = '';
+  months.forEach(m => {
+    const [y, mo] = m.split('-');
+    const label = MESES_LARGOS[parseInt(mo)-1] + ' ' + y;
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = label;
+    sel.appendChild(opt);
+  });
+
+  // Default: current or nearest month
+  const todayMonth = todayStr().slice(0,7);
+  if (months.includes(curVal)) {
+    sel.value = curVal;
+  } else if (months.includes(todayMonth)) {
+    sel.value = todayMonth;
+  } else {
+    sel.value = months[0] || '';
+  }
+
+  const count = aseoData.filter(a => a.fecha.startsWith(sel.value)).length;
+  document.getElementById('aseo-total').textContent = count + (count === 1 ? ' domingo' : ' domingos');
+}
+
+function renderAseoList() {
+  const container = document.getElementById('aseo-list');
+  const selMonth = document.getElementById('aseo-month-sel').value;
+  const today = todayStr();
+  const next = getNextAseo();
+
+  const lista = aseoData
+    .filter(a => a.fecha.startsWith(selMonth))
+    .sort((a,b) => a.fecha.localeCompare(b.fecha));
+
+  if (!lista.length) {
+    container.innerHTML = `<div class="act-empty"><span class="act-empty-icon">🧹</span><p>No hay programación de aseo para este mes.</p></div>`;
+    return;
+  }
+
+  container.innerHTML = lista.map(a => {
+    const { dia, mes, sem } = formatActDate(a.fecha);
+    const isPast = a.fecha < today;
+    const isToday = a.fecha === today;
+    const isNext = next?.id === a.id;
+
+    return `
+      <div class="aseo-card ${isPast ? 'pasada' : ''} ${isNext ? 'proxima' : ''}">
+        <div class="aseo-accent"></div>
+        <div class="aseo-inner">
+          <div class="aseo-date-block">
+            <span class="dia-num">${dia}</span>
+            <span class="dia-mes">${mes}</span>
+            <span class="dia-sem">${sem}</span>
+          </div>
+          <div class="aseo-body">
+            <div class="aseo-familia-nombre">🏠 ${a.familia}</div>
+            <div class="aseo-chips">
+              <span class="aseo-chip">Aseo</span>
+              ${isToday ? `<span class="aseo-chip aseo-chip-today">⚡ Hoy</span>` : ''}
+              ${isPast && !isToday ? `<span class="aseo-chip aseo-chip-past">Realizado</span>` : ''}
+              ${isNext && !isToday ? `<span class="aseo-chip" style="background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.25);">Próximo</span>` : ''}
             </div>
           </div>
         </div>
